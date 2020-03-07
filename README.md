@@ -2,7 +2,9 @@
 
 This is intended to be a universal flash loader utility for embedded SOCs and MCUs.  
 
-It is currently a work in progress, and if you are looking for a flash utility, the utility is not currently functional.
+Current status: 
+This is currently a work in progress, and if you are looking for a flash utility, 
+the utility is currently non-functional.
 
 ## Roadmap:
 
@@ -42,6 +44,15 @@ Found: NXP/Freescale Vybrid SOC (march=vybrid)
 .. downloading
 --march=msp430 --bus=usb --file=myfile.hex
 $ superflash --march=vybrid --bus=usb --
+```
+
+## Building documentation
+This project uses sphinx to generate documentation.  To build the documentation:
+```
+$ mkdir build
+$ cd build
+$ cmake -DBUILD_DOCS=ON ..
+$ make
 ```
 
 ## Installing Required Packages on Ubuntu
