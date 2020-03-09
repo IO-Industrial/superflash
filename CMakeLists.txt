@@ -1,12 +1,41 @@
-cmake_minimum_required(VERSION 3.1.0)
+# superflash CMake file
+#
+# Copyright (C) 2020  Joe Turner <joe@agavemountain.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+cmake_minimum_required(VERSION 3.4)
 project (superflash)
 
-# -BUILD_DOCS=[ON | OFF]  
+# Set to c++ 11
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# Build documentation option
+# 
+# This option will build the html documentation and doxygen
+# documentation
+#
+# usage: cmake -DBUILD_DOCS=ON ..
+#  
 option(BUILD_DOCS "Build the documentation" OFF)
 
 if(BUILD_DOCS)
-    set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
     find_package(Sphinx REQUIRED)
+    find_package(Doxygen)
     
     # configured documentation tools and intermediate build results
     set(BINARY_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/_build")
@@ -25,20 +54,57 @@ if(BUILD_DOCS)
             "${CMAKE_CURRENT_SOURCE_DIR}/doc"
             "${SPHINX_HTML_DIR}"
         COMMENT "Building HTML documentation with Sphinx")
+
+    # check if Doxygen is installed
+
+	if (DOXYGEN_FOUND)
+	    # set input and output files
+	    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+	    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+	    # request to configure the file
+	    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+	    message("Doxygen build started")
+
+	    # note the option ALL which allows to build the docs together with the application
+	    add_custom_target( doc_doxygen ALL
+            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            COMMENT "Generating documentation with Doxygen"
+            VERBATIM )
+	else (DOXYGEN_FOUND)
+		message("Doxygen need to be installed to generate the doxygen documentation")
+	endif (DOXYGEN_FOUND)
 endif(BUILD_DOCS)
 unset(USE_MY_LIB CACHE) # This will unset the option in the cache
 
 find_package(PkgConfig)
 pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
 
+find_package(spdlog REQUIRED)
+include_directories(${SPDLOG_INCLUDEDIR})
+
+SET(COMMON_SRC 
+    src/transport/transport.cpp
+    src/transport/sg_transport.cpp
+    src/environment.cpp
+    src/usb/usb_devices.cpp
+    src/usb/USBWrapper.cpp
+    src/commands/utp_command.cpp
+    src/errors.cpp
+    src/bytesex.cpp
+)
+
 link_directories(${LIBUSB_LIBRARY_DIRS} )
 include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/imx ${LIBUSB_INCLUDE_DIRS})
 add_executable(superflash src/superflash.cpp
-    src/environment.cpp
-    src/usb_devices.cpp
-    src/USBWrapper.cpp
-    src/imx/UTP.cpp
-    src/transport.cpp
+    ${COMMON_SRC}
     )
 
-target_link_libraries(superflash  ${LIBUSB_LIBRARIES})
+target_link_libraries(superflash ${LIBUSB_LIBRARIES})
+
+add_executable(utp src/utp.cpp
+    ${COMMON_SRC}
+    )
+
+target_link_libraries(utp ${LIBUSB_LIBRARIES} )

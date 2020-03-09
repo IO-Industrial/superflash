@@ -17,7 +17,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "usb_devices.h"
+#include "usb/usb_devices.h"
 
 namespace {
 const uint32_t FREESCALE_PID = 0x15A2;
@@ -167,7 +167,9 @@ struct sf_usb_device sf_usb_devices[]=
     {
         .vid=0,
         .pid=0,
-        .march_description=""
+        .march_description="",
+        .vendor = VENDOR_UNKNOWN,
+        .protocols = UKNOWN_PROTOCOL,
     }
 
 

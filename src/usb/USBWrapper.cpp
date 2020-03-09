@@ -19,7 +19,7 @@
  */
 #include <iostream>
 #include <stdio.h>
-#include "USBWrapper.h"
+#include "usb/USBWrapper.h"
 
 using namespace std;
 

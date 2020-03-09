@@ -1,0 +1,5 @@
+
+uboot.setenv hello "hello"
+uboot.saveenv
+uboot.bootm 
+uboot.reset

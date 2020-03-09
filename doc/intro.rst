@@ -1,37 +1,114 @@
 Introduction
 ============
 
-Superflash is ultimately envisioned as a set standard of utilities to program/flash 
-embedded System On Chip (SOCs), embedded development boards, AVRs, MCUs, flash, EEPROMs
+Superflash is ultimately envisioned as a set standard of 
+utilities to program/flash embedded System On Chip (SOCs),
+embedded development boards, AVRs, MCUs, flash, EEPROMs
 and more.
+
+Each semiconductor manufacturer supplies tools for
+flashing/programming their parts.  As a result, professionally
+developing for multiple MCUs, MPUs, and SOCs requires multiple 
+programmers, debuggers, IDEs, applications, and sometimes,
+hacked together applications.  Over time, many of these tools
+become hard to find, especially after parts reach end-of-life.
+
+Worse yet, companies that make the IDEs, programmers, etc., will 
+force you to purchase upgraded licenses in order to continue
+programming devices.
+
+Even within a manufacturer’s own semiconductor lineup, different
+chips will require different utilities, configuration files, and
+setups to flash their chips.
+
+Some require bizarre and poorly documented scripting languages, 
+sometimes in random formats.
+
+Enough already.
 
 Basic Concepts
 --------------
 
-Given the hurculean task of supporting a multitude of chips, development systems, programmers,
-debuggers, file formats, and algorithms, it's necessary to generalize the components
+Given the herculean task of supporting a multitude of chips,
+development systems, programmers, debuggers, file formats, and
+algorithms, it's necessary to generalize the components
 of the system.
 
-**Target board (or chip)**.  This can be a standalone chip programmed or development board,
-and may support multiple avenues for programming (i.e., serial programming as well as 
-JTAG).  Each board (or family of chips) has a configuration file that tells the
-utilities necessary information on what the device is, how to find it, memory 
-addresses, capapbilities, etc.
+**Target board (or chip)**.  This can be a standalone chip
+programmed or development board, and may support multiple
+avenues for programming (i.e., serial programming as well as
+JTAG).  Each board (or family of chips) has a configuration file
+that tells the utilities necessary information on what the
+device is, how to find it, memory addresses, capabilities, etc.
 
-**Transport**.  This is a generalization of how the bits are transported
-from the host into the target board, and refers to the connection between the host and
-the target board/device.  It may be a built in USB-serial with a USB cable, a simple serial
-cable, raw JTAG, a stand-alone JTAG programmer, or specialized programmer provided by a 
-manufacturer.
+**Transport**.  This is a generalization of how the bits are
+Transported from the host into the target board, and refers to
+the connection between the host and the target board/device.  
+It may be a built in USB-serial with a USB cable, a simple serial
+cable, raw JTAG, a stand-alone JTAG programmer, or specialized
+programmer provided by a manufacturer.
 
-**Programming protocol/algorithm**.  A target device may require a specialized protocol
-to successfully program a bootloader into a device.  This includes Freescale/NXP's 
-Serial Download Protocol (SDP), or something a generic as JTAG.
+**Programming protocol/algorithm**.  A target device may require
+a specialized protocol to successfully program a bootloader onto a 
+device.  This includes Freescale/NXP's Serial Download
+Protocol (SDP), or something a generic as JTAG.
 
-**Firmware files**.  These are the files that are to be transferred into the target
-board/device.  Each manufacturer supports different file formats (Intel Hex, Motorola S Record,
+**Firmware files**.  These are the files that are to be
+transferred into the target board/device.  Each manufacturer
+supports different file formats (Intel Hex, Motorola S Record, 
 ELF (Executable and Linkable Format), etc.).
 
+Supported Protocols
+-------------------
 
+The following protocols and transports are supported in this
+release:
 
++---------------+--------------+-------------------------------------------------------------+
+| Protocol      | Transports   | Notes                                                       |
++===============+==============+=============================================================+
+| Freescale UTP | SCSI generic | Freescale Update Transport Protocol (UTP) is only           |
+|               |              | supported via SCSI generic commands (Linux ONLY).           |
++---------------+--------------+-------------------------------------------------------------+
+| NXP SDP       | USB (HID)    | NXP Serial Download Protocol                                |
+|               | Serial (UART)|                                                             |
++---------------+--------------+-------------------------------------------------------------+
 
+Freescale UTP Protocol
+----------------------
+
+The Freescale Update Transport Protocol (UTP) is a protocol
+defined for delivering device update commands over USB, carried
+over Bulk Only Transport (BOT) of the Mass Storage Class (MSC).  
+
+On the host side, it is implemented on top of an MSC stack that
+supports vendor specific SCSI commands. The UTP messages are implemented 
+using a vendor-specific 16-byte SCSI Command Descriptor Block (CDB). 
+The extended UTP reply is returned through a standard SCSI REQUEST_SENSE 
+command.
+
+This was one of the primary methods of programming devices with 
+Freescale's manufacturing tool (mfgtool), and appears to be still 
+supported.
+
+NXP Serial Download Protocol (SDP)
+----------------------------------
+
+The Serial Download Protocol (SDP) is a protocol used in NXP's
+i.MX SOCs ROM Serial Downloader, which provides a means to 
+download a program image to the chip, over USB or serial UART
+connections.
+
+The SDP protocol over USB is a USB HID class protocol, allowing
+access to the device without OS-specific device drivers.  SDP 
+has also been implemented in U-Boot.
+
+Acknowledgements
+----------------
+
+The UTP protocol is not well documented and very little is in
+the public domain regarding the actual protocol.  This code
+draws heavily from idioms from Digitalist Group's/Ixonos PLC's
+utp_com utility and Freescale's uuc deamon.  The code was tested
+on a Vybrid SOC development board and customized embedded
+product based on the Vybrid SOC.

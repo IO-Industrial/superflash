@@ -15,14 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "transport.h"
+#include "transport/transport.h"
 #include <iostream>
 #include <fcntl.h>
 #include <unistd.h>
 
-int TransportDevice::Open(std::string &filename)
+int TransportDevice::Open()
 {
-    _device_filename = filename;
+    if (_device_fd >= 0) {
+        // device is already open.  
+        Close();
+    }
+
     // Open device
 	_device_fd = open(_device_filename.c_str(), O_RDONLY);
 	if (_device_fd < 0)
@@ -41,5 +45,3 @@ void TransportDevice::Close()
     close(_device_fd);
 }
 
-#ifdef __linux__ 
-#endif

@@ -1,8 +1,5 @@
 /*
- * \file UTP.h
- *
- * Protypes and structures for Freescale/NXP's UTP protocol
- * (Applicable to i.MX/Vybrid series processors)
+ * \file bytesex.h
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,17 +15,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "UTP.h"
+#ifndef _BYTESEX_H_
+#define _BYTESEX_H_
 
-namespace imx {
+void hexdump(void *ptr, int buflen);
 
-struct utp_cmd utp_poll = {.data = {0xf0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-                                0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}};
-
-struct utp_cmd utp_exec = {.data = {0xf0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-                                0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}};
-
-struct utp_cmd utp_put = {.data = {0xf0, 0x3, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-                               0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}};
-
-} // namespace imx
+#endif

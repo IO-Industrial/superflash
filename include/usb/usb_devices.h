@@ -20,9 +20,41 @@
 #pragma once
 #include <stdint.h>
 
+enum eVENDORS
+{
+    VENDOR_UNKNOWN,
+    VENDOR_NXP,
+};
+
+enum ePROTOCOLS
+{
+    UKNOWN_PROTOCOL = 0,
+    UTP_USB = 0x01,
+    SDP_UART = 0x2,
+    SDP_USB = 0x4,
+};
+
 struct sf_usb_device 
 {
     uint32_t    vid;
     uint32_t    pid;
     const char  *march_description;
+
+    uint32_t    vendor;
+    uint32_t    protocols;
 };
+
+//! \brief Search for this device in our supported device array
+//!
+//! This function will search for the device in our supported
+//! device array.  
+//!
+//! \param  vid
+//! \param  pid
+//!
+//! \returns
+//!
+//! If this device is supported, a pointer to the structure will be returned.
+//! However, if this combination of vid and pid cannot be found, a NULL
+//! will be returned.
+struct sf_usb_device *find(uint32_t vid, uint32_t pid);
