@@ -19,6 +19,6 @@
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
-#define SUPER_FLASH_RELEASE "0.0.0"
+#define SUPER_FLASH_RELEASE "0.0.1"
 
 #endif
