@@ -108,3 +108,5 @@ add_executable(utp src/utp.cpp
     )
 
 target_link_libraries(utp ${LIBUSB_LIBRARIES} )
+
+install(TARGETS utp DESTINATION bin)
