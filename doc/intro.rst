@@ -70,38 +70,6 @@ release:
 | Freescale UTP | SCSI generic | Freescale Update Transport Protocol (UTP) is only           |
 |               |              | supported via SCSI generic commands (Linux ONLY).           |
 +---------------+--------------+-------------------------------------------------------------+
-| NXP SDP       | USB (HID)    | NXP Serial Download Protocol                                |
-|               | Serial (UART)|                                                             |
-+---------------+--------------+-------------------------------------------------------------+
-
-Freescale UTP Protocol
-----------------------
-
-The Freescale Update Transport Protocol (UTP) is a protocol
-defined for delivering device update commands over USB, carried
-over Bulk Only Transport (BOT) of the Mass Storage Class (MSC).  
-
-On the host side, it is implemented on top of an MSC stack that
-supports vendor specific SCSI commands. The UTP messages are implemented 
-using a vendor-specific 16-byte SCSI Command Descriptor Block (CDB). 
-The extended UTP reply is returned through a standard SCSI REQUEST_SENSE 
-command.
-
-This was one of the primary methods of programming devices with 
-Freescale's manufacturing tool (mfgtool), and appears to be still 
-supported.
-
-NXP Serial Download Protocol (SDP)
-----------------------------------
-
-The Serial Download Protocol (SDP) is a protocol used in NXP's
-i.MX SOCs ROM Serial Downloader, which provides a means to 
-download a program image to the chip, over USB or serial UART
-connections.
-
-The SDP protocol over USB is a USB HID class protocol, allowing
-access to the device without OS-specific device drivers.  SDP 
-has also been implemented in U-Boot.
 
 Acknowledgements
 ----------------

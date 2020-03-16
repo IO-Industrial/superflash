@@ -6,7 +6,6 @@ Welcome to superflash's documentation!
    :caption: Contents:
 
    intro
-   config
    nxp
 
 Indices and tables
