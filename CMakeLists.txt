@@ -87,16 +87,21 @@ include_directories(${SPDLOG_INCLUDEDIR})
 SET(COMMON_SRC 
     src/transport/transport.cpp
     src/transport/sg_transport.cpp
-    src/environment.cpp
     src/usb/usb_devices.cpp
     src/usb/USBWrapper.cpp
     src/commands/utp_command.cpp
     src/errors.cpp
     src/bytesex.cpp
+    src/config/environment.cpp
+    src/config/global_config.cpp
 )
 
 link_directories(${LIBUSB_LIBRARY_DIRS} )
-include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/imx ${LIBUSB_INCLUDE_DIRS})
+include_directories( 
+    ${CMAKE_SOURCE_DIR}/include
+    ${LIBUSB_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/third-party
+    )
 add_executable(superflash src/superflash.cpp
     ${COMMON_SRC}
     )

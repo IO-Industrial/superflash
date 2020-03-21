@@ -103,7 +103,7 @@ public:
     //! \returns
     //! 	If the environment variable exists, it returns true.
     //!		If it does not, this function returns false.
-    bool isExists(const char *a_key);
+    static bool isExists(const char *a_key);
 
     //! Check to see if an environment variable exists.
     //!
@@ -112,7 +112,7 @@ public:
     //! \returns
     //! 	If the environment variable exists, it returns true.
     //!		If it does not, this function returns false.
-    bool isExists(std::string &a_key);
+    static bool isExists(std::string &a_key);
 
     //! Erase (unset) a specific environment variable.
     //!

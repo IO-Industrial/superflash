@@ -17,26 +17,37 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 #ifndef _FILE_UTILITIES_HPP_
-#include <sys/stat.h>
-#include <string>
-#include <vector>
 #include <fstream>
+#include <string>
+#include <sys/stat.h>
+#include <vector>
 
 //! \brief checks to see if a file exists
 //!
 //! \param filename     path and filename of the file to look for
 //! \returns
 //!     true if the file exists, else false.
-inline bool doesFileExist (const std::string& filename) {
+inline bool doesFileExist(const std::string& filename)
+{
     struct stat buffer;
-    return (stat (filename.c_str(), &buffer) == 0);
+    return (stat(filename.c_str(), &buffer) == 0);
 }
 
-inline 
-size_t getFileSize(const std::string& filename) {
+//! \brief checks to see if a directory exists
+//!
+//! \param path     path and name of the directory to look for
+//! \returns
+//!     true if the directory exists, else false.
+inline bool doesDirectoryExist(const std::string& path)
+{
     struct stat buffer;
-    if (stat (filename.c_str(), &buffer) == 0)
-    {
+    return ((stat(path.c_str(), &buffer) == 0) && (buffer.st_mode & S_IFDIR));
+}
+
+inline size_t getFileSize(const std::string& filename)
+{
+    struct stat buffer;
+    if (stat(filename.c_str(), &buffer) == 0) {
         return buffer.st_size;
     }
     return -1;
@@ -44,13 +55,13 @@ size_t getFileSize(const std::string& filename) {
 
 inline std::vector<unsigned char> load_file_into_vector(const std::string& filename)
 {
-    std::ifstream fin{ filename, std::ios::binary };
-    fin.seekg (0, fin.end);
+    std::ifstream fin { filename, std::ios::binary };
+    fin.seekg(0, fin.end);
     size_t len = fin.tellg();
-    fin.seekg (0, fin.beg);
+    fin.seekg(0, fin.beg);
 
     std::vector<unsigned char> coll(len);
-    fin.read((char *)coll.data(), len);
+    fin.read((char*)coll.data(), len);
     return coll;
 }
 
