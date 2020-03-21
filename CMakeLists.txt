@@ -84,6 +84,26 @@ pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
 find_package(spdlog REQUIRED)
 include_directories(${SPDLOG_INCLUDEDIR})
 
+set(YAML_CPP_BUILD_TESTS OFF CACHE BOOL "disable yaml tests")
+set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "disable yaml tools")
+set(YAML_CPP_BUILD_CONTRIB OFF CACHE BOOL "disable yaml contrib")
+
+include(ExternalProject)
+
+ExternalProject_Add(
+	yaml_cpp_project
+	SOURCE_DIR "${CMAKE_SOURCE_DIR}/third-party/yaml-cpp/"
+	INSTALL_DIR "${CMAKE_BINARY_DIR}/prefix"
+	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+)
+
+add_library(yaml-cpp UNKNOWN IMPORTED)
+set_target_properties(gmock PROPERTIES
+	IMPORTED_LOCATION ${PROJECT_BINARY_DIR}/prefix/lib/${CMAKE_STATIC_LIBRARY_PREFIX}yaml-cpp${CMAKE_STATIC_LIBRARY_SUFFIX}
+)
+
+include_directories(SYSTEM "${PROJECT_BINARY_DIR}/prefix/include")
+
 SET(COMMON_SRC 
     src/transport/transport.cpp
     src/transport/sg_transport.cpp
@@ -106,7 +126,7 @@ add_executable(superflash src/superflash.cpp
     ${COMMON_SRC}
     )
 
-target_link_libraries(superflash ${LIBUSB_LIBRARIES})
+target_link_libraries(superflash ${LIBUSB_LIBRARIES} yaml-cpp)
 
 add_executable(utp src/utp.cpp
     ${COMMON_SRC}
@@ -115,3 +135,4 @@ add_executable(utp src/utp.cpp
 target_link_libraries(utp ${LIBUSB_LIBRARIES} )
 
 install(TARGETS utp DESTINATION bin)
+add_dependencies(superflash yaml_cpp_project) 
