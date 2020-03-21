@@ -84,24 +84,36 @@ pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
 find_package(spdlog REQUIRED)
 include_directories(${SPDLOG_INCLUDEDIR})
 
+set(YAML_CPP_BUILD_TESTS OFF CACHE BOOL "disable yaml tests")
+set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "disable yaml tools")
+set(YAML_CPP_BUILD_CONTRIB OFF CACHE BOOL "disable yaml contrib")
+
+add_subdirectory(third-party/yaml-cpp)
+
 SET(COMMON_SRC 
     src/transport/transport.cpp
     src/transport/sg_transport.cpp
-    src/environment.cpp
     src/usb/usb_devices.cpp
     src/usb/USBWrapper.cpp
     src/commands/utp_command.cpp
     src/errors.cpp
     src/bytesex.cpp
+    src/config/environment.cpp
+    src/config/global_config.cpp
 )
 
 link_directories(${LIBUSB_LIBRARY_DIRS} )
-include_directories(${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/imx ${LIBUSB_INCLUDE_DIRS})
+include_directories( 
+    ${CMAKE_SOURCE_DIR}/include
+    ${LIBUSB_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/third-party
+    )
+
 add_executable(superflash src/superflash.cpp
     ${COMMON_SRC}
     )
 
-target_link_libraries(superflash ${LIBUSB_LIBRARIES})
+target_link_libraries(superflash ${LIBUSB_LIBRARIES} yaml-cpp)
 
 add_executable(utp src/utp.cpp
     ${COMMON_SRC}
@@ -110,3 +122,4 @@ add_executable(utp src/utp.cpp
 target_link_libraries(utp ${LIBUSB_LIBRARIES} )
 
 install(TARGETS utp DESTINATION bin)
+

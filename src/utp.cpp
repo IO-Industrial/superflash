@@ -23,6 +23,7 @@
 #include "errors.h"
 #include "commands/utp_command.h"
 #include "version.h"
+#include "config/global_config.h"
 
 using namespace std;
 // using namespace spdlog;
@@ -53,6 +54,8 @@ int main(int argc, char **argv)
 	char *file_data = NULL;
 	
     printf("UTP utility %s\n", SUPER_FLASH_RELEASE);
+
+    GlobalConfiguration &config  = GlobalConfiguration::instance();
 
     // Parse parameters
 	while ((c = getopt(argc, argv, "c:d:f:")) != -1)
