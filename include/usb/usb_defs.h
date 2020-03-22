@@ -1,7 +1,8 @@
 /*
- * \file USBAdapter.h
+ * \file usb_bus.h
  *
- * libusb wrapper class.
+ * Shared definitions, includes, equates, and other structures in 
+ * the usb code.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,21 +21,3 @@
 #pragma once
 #include <libusb.h>
 
-class USB {
-
-public:
-
-    //! \brief Initialize libusb.
-    //! This function must be called before calling any other libusb function.
-    int init();
-
-    //! \brief Deinitialize libusb. 
-    //! Should be called after closing all open devices and before your application terminates. 
-    void release();
-
-    void print_devices(libusb_device **devices);
-
-    bool enumerate_devices();
-
-    //virtual bool OnEnumeratedDevice();
-};

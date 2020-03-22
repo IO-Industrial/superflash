@@ -29,6 +29,7 @@ namespace {
         "Error, UTP reply is corrupted",
         "Error, device is busy",
         "Error, specified file does not exist",
+        "Error, failed to initialize USB context",
         "Invalid error code.",
     };
 }

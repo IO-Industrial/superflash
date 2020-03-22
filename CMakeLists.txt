@@ -94,7 +94,6 @@ SET(COMMON_SRC
     src/transport/transport.cpp
     src/transport/sg_transport.cpp
     src/usb/usb_devices.cpp
-    src/usb/USBWrapper.cpp
     src/commands/utp_command.cpp
     src/errors.cpp
     src/bytesex.cpp

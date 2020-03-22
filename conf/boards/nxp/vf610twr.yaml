@@ -1,0 +1,25 @@
+---
+    transport: "usb"
+    
+    usb_transport:
+        transfer: "hid" 
+        vid: 0x0000
+        pid: 0x0000
+
+    sg_transport:
+        device: "/dev/sg0"
+
+    # This is the device definition
+    device:
+        mame: "Vybrid vf610 tower"
+        max_packet_size: 1024
+        dcd_addr: 0x3F00700
+        # RAM areas are areas of continuous memory
+        ram:
+            - ram1: 
+                start: 0x10000000
+                size: 1G
+            - ram2:
+                start: 0x3f400000
+                size: 0x80000
+        

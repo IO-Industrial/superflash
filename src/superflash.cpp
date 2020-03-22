@@ -18,7 +18,8 @@
  */
 #include <getopt.h>
 #include <iostream>
-#include "usb/USBWrapper.h"
+#include "usb/usb_bus.h"
+#include "usb/usb_device.h"
 
 using namespace std;
 
@@ -38,9 +39,18 @@ void print_usage(void) {
 void scan_usb()
 {
   USB usb;
-  usb.init();
-  usb.enumerate_devices();
-  usb.release();
+  usb.initialize();
+
+  std::vector<USBDevice> list = usb.get_device_list();
+  for (int i=0;i<list.size();i++)
+  {
+    USBDevice dev = list[i];
+    dev.dump();
+  }
+
+  //usb.enumerate_devices();
+
+  usb.deinitialize();
 }
 
 static const struct option long_options[] = {
