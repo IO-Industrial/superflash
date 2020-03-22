@@ -1,0 +1,50 @@
+---
+    # Active transport
+    # The transport key-value tells our utilities how to transfer data
+    # to the device/board.  The code will look for whatever
+    # is in here with a "_transport" suffix.  This way
+    # we can define multiple tranports and switch between them.
+    transport: "usb"
+    
+    # This device supports USB and communicates over the HID interface.
+    usb_transport:
+        # Transfer is done over HID transfers
+        transfer: "hid" 
+        # Vendor: Freescale
+        vid: 0x15A2
+        # Product ID
+        pid: 0x006A
+
+    # SCSI Generic transport (LINUX ONLY)
+    sg_transport:
+        # Device name that appers on our Linux system after the device
+        # enters UMS mode.
+        device: "/dev/sg0"
+
+    # Serial transport
+    uart_transport:
+        device: "/dev/ttyUSB0"
+        speed: 11520
+
+    # This is the device definition
+    device:
+        # Name for this board
+        name: "Custom Vybrid vfxxx"
+
+        # Maximum packet size
+        max_packet_size: 1024
+
+        # Device Configuration Data address.  When the device resets, default values
+        # are used to configure system peripherials.  We may need to override those
+        # values to configure RAM, clocks, etc.
+        dcd_addr: 0x3F00700
+
+        # RAM areas are areas of continuous memory
+        ram:
+            - ram1: 
+                start: 0x10000000
+                size: "1G"
+            - ram2:
+                start: 0x3f400000
+                size: 0x80000
+        

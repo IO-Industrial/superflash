@@ -18,77 +18,89 @@
  */
 #include <getopt.h>
 #include <iostream>
+#include <string>
 #include "usb/usb_bus.h"
 #include "usb/usb_device.h"
+#include "config/board_config.h"
 
 using namespace std;
 
-void print_banner(void) {
-  cout << "superflash (C) 2020 Joe Turner; All rights reserved.\n\n";
+void print_banner(void)
+{
+    cout << "superflash (C) 2020 Joe Turner; All rights reserved.\n\n";
 }
 
-void print_usage(void) {
-  cout << "Usage: superflash [OPTIONS...] \n"
-          "\n"
-          "Where OPTIONS are\n"
-          "   -h --help		Show this help\n"
-          "   -s --scanusb    Scan USB buses to identify devices"
-          "\n";
+void print_usage(void)
+{
+    cout << "Usage: superflash [OPTIONS...] \n"
+            "\n"
+            "Where OPTIONS are\n"
+            "   -h --help		Show this help\n"
+            "   -s --scanusb    Scan USB buses to identify devices"
+            "\n";
 }
 
 void scan_usb()
 {
-  USB usb;
-  usb.initialize();
+    USB usb;
+    usb.initialize();
 
-  std::vector<USBDevice> list = usb.get_device_list();
-  for (int i=0;i<list.size();i++)
-  {
-    USBDevice dev = list[i];
-    dev.dump();
-  }
+    std::vector<USBDevice> list = usb.get_device_list();
+    for (int i = 0; i < list.size(); i++) {
+        USBDevice dev = list[i];
+        dev.dump();
+    }
 
-  //usb.enumerate_devices();
+    //usb.enumerate_devices();
 
-  usb.deinitialize();
+    usb.deinitialize();
 }
 
 static const struct option long_options[] = {
-    {"help", no_argument, 0, 'h'},
-    {"scanusb", no_argument, 0, 's'},
-    {0, 0, 0, 0},
+    { "help", no_argument, 0, 'h' },
+    { "scanusb", no_argument, 0, 's' },
+    { "board", required_argument, 0, 'b' },
+    { 0, 0, 0, 0 },
 };
 
-int main(int argc, char **argv) {
-  int c;
-  bool scanusb = 0;
+int main(int argc, char** argv)
+{
+    int c;
+    bool scanusb = 0;
+    std::string boardconf = "";
 
-  print_banner();
-  while ((c = getopt_long(argc, argv, "hs", long_options, NULL)) !=
-         -1) {
-    switch (c) {
-    case 'h':
-      print_usage();
-      return 0;
-    case 's':
-      scanusb = 1;
-      break;
-
-    case ':': // missing option argument
-      cerr << argv[0] << ": option '-" << (char)optopt
-           << "requires an argument. aborting.\n";
-      return 1;
-      break;
-    case '?':
-    default: // invalid option
-      cerr << argv[0] << ": option '-" << (char)optopt << "is invalid: aborting.\n";
-      return 1;
-      break;
+    print_banner();
+    while ((c = getopt_long(argc, argv, "hsb:", long_options, NULL)) != -1) {
+        switch (c) {
+        case 'h':
+            print_usage();
+            return 0;
+        case 's':
+            scanusb = 1;
+            break;
+        case 'b':
+            boardconf = optarg;
+            break;
+        case ':': // missing option argument
+            cerr << argv[0] << ": option '-" << (char)optopt
+                 << "requires an argument. aborting.\n";
+            return 1;
+            break;
+        case '?':
+        default: // invalid option
+            cerr << argv[0] << ": option '-" << (char)optopt << "is invalid: aborting.\n";
+            return 1;
+            break;
+        }
     }
-  }
 
-  if (scanusb == true)
-  {
-    scan_usb();
-  }
+    if (scanusb == true) {
+        scan_usb();
+    }
+
+    if (boardconf.size())
+    {
+      BoardConfig bcfg;
+      bcfg.load(boardconf);
+    }
 }

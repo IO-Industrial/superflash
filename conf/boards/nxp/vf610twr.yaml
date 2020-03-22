@@ -3,8 +3,8 @@
     
     usb_transport:
         transfer: "hid" 
-        vid: 0x0000
-        pid: 0x0000
+        vid: 0x15A2
+        pid: 0x006A
 
     sg_transport:
         device: "/dev/sg0"
