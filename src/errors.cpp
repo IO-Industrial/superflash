@@ -18,6 +18,8 @@
  */
 #include "errors.h"
 #include <stdio.h>
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_sinks.h"
 
 namespace {
     const char *sf_errors[] =
@@ -43,5 +45,6 @@ void SF_ERROR(enum sf_ERROR error_no)
         idx = SF_ERR_INVALID;
     }
 
-    printf("Error %d: %s\n", idx, sf_errors[idx]);
+    //printf("Error %d: %s\n", idx, sf_errors[idx]);
+    spdlog::error("Error {}: {}\n", idx, sf_errors[idx]);
 }

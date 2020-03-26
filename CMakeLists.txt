@@ -81,8 +81,7 @@ unset(USE_MY_LIB CACHE) # This will unset the option in the cache
 find_package(PkgConfig)
 pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
 
-find_package(spdlog REQUIRED)
-include_directories(${SPDLOG_INCLUDEDIR})
+set(SPDLOG_INCLUDEDIR third-party/spdlog/include)
 
 set(YAML_CPP_BUILD_TESTS OFF CACHE BOOL "disable yaml tests")
 set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "disable yaml tools")
@@ -106,6 +105,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/include
     ${LIBUSB_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/third-party
+    ${SPDLOG_INCLUDEDIR}
     )
 
 add_executable(superflash src/superflash.cpp
