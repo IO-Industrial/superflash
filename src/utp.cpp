@@ -91,10 +91,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    // // get version
-    // UTPVersion ver;
-    // ver.execute(dev);
-
     if (command.size()==0)
     {
         printf("No command specified.  Aborting.\n");
@@ -110,7 +106,6 @@ int main(int argc, char **argv)
         utp_send_command_with_wait(dev, command);
     }
     
-
     printf("Done.\n");
 
     dev->Close();

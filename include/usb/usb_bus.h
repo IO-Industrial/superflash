@@ -29,7 +29,7 @@
 //! \brief USB subsystem class
 //!
 //! This non-copyable class wraps the libUSB API.  
-//! Support for libUSB and libUSB1
+//!
 class USB
 {
 

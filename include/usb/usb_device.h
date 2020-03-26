@@ -102,47 +102,6 @@ public:
 			dconfig.config->bNumInterfaces);
     }
 
-//     void USB::print_devices(libusb_device **devices)
-// {
-//     int i=0;
-//     libusb_device *device = devices[i];
-//     struct libusb_config_descriptor *config;
-//     struct libusb_device_descriptor descriptor;
-
-//     while (device)
-//     {
-//         device = devices[i++];
-//         if(!device) break;
-
-//         if (libusb_get_device_descriptor(device, &descriptor) < 0)
-//         {
-//             cerr << "failed to get device descriptor\n";
-//             return;
-//         }
-
-//         libusb_get_config_descriptor(device, 0, &config);
-//         printf("%04x:%04x (bus %d, device %d) bNumInterfaces:%i\n",
-// 			descriptor.idVendor, descriptor.idProduct,
-// 			libusb_get_bus_number(device), libusb_get_device_address(device),
-// 			config->bNumInterfaces);
-// 		for (int j = 0; j < config->bNumInterfaces; j++) {
-// 			const struct libusb_interface *inter = &config->interface[j];
-// 			printf("  alternates:%i\n", inter->num_altsetting);
-// 			for (int k = 0; k < inter->num_altsetting; k++) {
-// 				const struct libusb_interface_descriptor *interdesc = &inter->altsetting[k];
-// 				printf("    Interface Number: %i, Number of endpoints: %i\n",
-// 						interdesc->bInterfaceNumber, interdesc->bNumEndpoints);
-// 				for (int l = 0; l < interdesc->bNumEndpoints; l++) {
-// 					const struct libusb_endpoint_descriptor *epdesc = &interdesc->endpoint[l];
-// 					printf("      Descriptor Type: %x, EP Address: %i, wMaxPacketSize: %i\n",
-// 							epdesc->bDescriptorType, epdesc->bEndpointAddress, epdesc->wMaxPacketSize);
-// 				}
-// 			}
-// 		}
-// 		libusb_free_config_descriptor(config);
-//     }
-
-
 private:
 
 	libusb_device_handle *handle_;

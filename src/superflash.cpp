@@ -51,8 +51,6 @@ void scan_usb()
         dev.dump();
     }
 
-    //usb.enumerate_devices();
-
     usb.deinitialize();
 }
 
