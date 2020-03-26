@@ -18,8 +18,8 @@
  */
 #include <getopt.h>
 #include <iostream>
-// #include "spdlog/spdlog.h"
-// #include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_sinks.h"
 #include "errors.h"
 #include "commands/utp_command.h"
 #include "version.h"
