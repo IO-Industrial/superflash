@@ -89,6 +89,10 @@ set(YAML_CPP_BUILD_CONTRIB OFF CACHE BOOL "disable yaml contrib")
 
 add_subdirectory(third-party/yaml-cpp)
 
+enable_testing()
+add_subdirectory(unittest)
+add_subdirectory(third-party/googletest)
+
 SET(COMMON_SRC 
     src/transport/transport.cpp
     src/transport/sg_transport.cpp
