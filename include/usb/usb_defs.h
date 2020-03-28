@@ -1,5 +1,5 @@
 /*
- * \file usb_bus.h
+ * \file usb_defs.h
  *
  * Shared definitions, includes, equates, and other structures in 
  * the usb code.

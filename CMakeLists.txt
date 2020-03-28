@@ -105,6 +105,7 @@ SET(COMMON_SRC
     src/transport/sg_transport.cpp
     src/usb/usb_devices.cpp
     src/commands/utp_command.cpp
+    src/commands/sdp_command.cpp
     src/errors.cpp
     src/bytesex.cpp
     src/config/environment.cpp
@@ -125,6 +126,12 @@ add_executable(utp src/utp.cpp
     )
 
 target_link_libraries(utp ${LIBUSB_LIBRARIES} )
+
+add_executable(sdp src/sdp.cpp
+    ${COMMON_SRC}
+    )
+
+target_link_libraries(sdp ${LIBUSB_LIBRARIES} )
 
 install(TARGETS utp DESTINATION bin)
 
