@@ -89,6 +89,13 @@ set(YAML_CPP_BUILD_CONTRIB OFF CACHE BOOL "disable yaml contrib")
 
 add_subdirectory(third-party/yaml-cpp)
 
+include_directories( 
+    ${CMAKE_SOURCE_DIR}/include
+    ${LIBUSB_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/third-party
+    ${SPDLOG_INCLUDEDIR}
+    )
+    
 enable_testing()
 add_subdirectory(unittest)
 add_subdirectory(third-party/googletest)
@@ -105,12 +112,7 @@ SET(COMMON_SRC
 )
 
 link_directories(${LIBUSB_LIBRARY_DIRS} )
-include_directories( 
-    ${CMAKE_SOURCE_DIR}/include
-    ${LIBUSB_INCLUDE_DIRS}
-    ${CMAKE_SOURCE_DIR}/third-party
-    ${SPDLOG_INCLUDEDIR}
-    )
+
 
 add_executable(superflash src/superflash.cpp
     ${COMMON_SRC}
