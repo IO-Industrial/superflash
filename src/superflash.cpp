@@ -19,11 +19,16 @@
 #include <getopt.h>
 #include <iostream>
 #include <string>
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_sinks.h"
 #include "usb/usb_bus.h"
 #include "usb/usb_device.h"
 #include "config/board_config.h"
 
 using namespace std;
+using namespace superflash::usb;
 
 void print_banner(void)
 {
@@ -42,6 +47,7 @@ void print_usage(void)
 
 void scan_usb()
 {
+    printf("Scan USB bus for devices.\n");
     USB usb;
     usb.initialize();
 
@@ -67,7 +73,15 @@ int main(int argc, char** argv)
     bool scanusb = 0;
     std::string boardconf = "";
 
+    spdlog::set_level(spdlog::level::trace);
+
     print_banner();
+    if (argc < 2)
+    {
+        print_usage();
+        return 0;
+    }
+
     while ((c = getopt_long(argc, argv, "hsb:", long_options, NULL)) != -1) {
         switch (c) {
         case 'h':
@@ -75,6 +89,7 @@ int main(int argc, char** argv)
             return 0;
         case 's':
             scanusb = 1;
+            
             break;
         case 'b':
             boardconf = optarg;

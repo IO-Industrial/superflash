@@ -1,7 +1,7 @@
 /*
- * \file usb_bus.h
+ * \file usb_context.h
  *
- * USB bus class
+ * USB context class
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,39 +20,56 @@
 #pragma once
 #include "usb/usb_defs.h"
 
-//! \brief USB Context class
-//!
-//! It is possible that libusb may be used simultaneously from two independent 
-//! libraries linked into the same executable. For example, if your application 
-//! has a plugin-like system which allows the user to dynamically load a range 
-//! of modules into your program, it is feasible that two independently 
-//! developed modules may both use libusb.
-//!
-//! This is made possible through libusb's context concept. When you call 
-//! ibusb_init(), you are (optionally) given a context. You can then pass this 
-//! context pointer back into future libusb functions.
-//!
-//! In order to keep things simple for more simplistic applications, it is 
-//! legal to pass NULL to all functions requiring a context pointer (as long 
-//! as you're sure no other code will attempt to use libusb from the same process). 
-//! When you pass NULL, the default context will be used. The default context 
-//! is created the first time a process calls libusb_init() when no other 
-//! context is alive. Contexts are destroyed during libusb_exit().
-//!
-//! Note: this concept was added in libusb 1.0; it does not exist in libusb
-class USBContext
-{
-public:
+namespace superflash {
+namespace usb {
 
-    USBContext() : _usbcontext(NULL) {}
-    USBContext(libusb_context *usbcontext) {
-        _usbcontext = usbcontext;
-    }
+    //! \brief USB Context class
+    //!
+    //! This class wraps a libusbcontext pointer.  This pointer is a concept of 
+    //! libusb, created when the library is initialized. 
+    //!
+    //! Since it is possible that libusb may be used simultaneously from two independent
+    //! libraries linked into the same executable, this is used by libusb to make 
+    //! sure that there aren't any collisions. 
+    //!
+    //! This pointer and any allocated memory are owned by libusb.  Contexts are
+    //! destroyed during libusb_exit.
+    //!
+    //! Note: this concept was added in libusb 1.0; it does not exist in libusb
+    class USBContext {
+    public:
 
-    libusb_context * getContext() { return _usbcontext; }
+        //! \brief Default constructor
+        USBContext()
+            : _usbcontext(NULL)
+        {
+        }
 
-private:
+        //! \brief Specialized constructor
+        //!
+        //! \param  ctx  - pointer to libusb usbcontext 
+        //!
+        USBContext(libusb_context* ctx)
+        {
+            _usbcontext = ctx;
+        }
 
-    libusb_context *_usbcontext;
+        //! \brief Set current USB context
+        //!
+        //! \retval libusb_context pointer
+        void setContext(libusb_context* ctx)
+        {
+            _usbcontext = ctx;
+        }
 
-};
+        //! \brief Get current USB context
+        //!
+        //! \retval libusb_context pointer
+        libusb_context* getContext() const { return _usbcontext; }
+
+    private:
+        libusb_context* _usbcontext;
+    };
+
+}
+}
