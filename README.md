@@ -61,7 +61,7 @@ $ make
 sudo apt-get install libusb-1.0-0-dev
 ```
 
-## Installing Required Packages on Ubuntu
+## Installing Required Packages on Mac OS-X
 
 ```
 brew install libusb
@@ -91,14 +91,14 @@ solution with.
 
 ### AVR
 
-- **[dfu-programmer](https://dfu-programmer.github.io/) - dfu-programmer is a multi-platform command-line programmer for 
+- **[dfu-programmer](https://dfu-programmer.github.io/)** - dfu-programmer is a multi-platform command-line programmer for 
 Atmel (8051, AVR, XMEGA & AVR32) chips with a USB bootloader supporting ISP.
 
-- **[avrdude](https://www.nongnu.org/avrdude/) - avr downloader/uploader
+- **[avrdude](https://www.nongnu.org/avrdude/)** - avr downloader/uploader
 
-- **[Atmel AVR911: AVR Open Source Programmer](http://ww1.microchip.com/downloads/en/AppNotes/doc2568.pdf) -
+- **[Atmel AVR911: AVR Open Source Programmer](http://ww1.microchip.com/downloads/en/AppNotes/doc2568.pdf)** -
 
-- **[AVR109: Self Programming](http://ww1.microchip.com/downloads/en/Appnotes/doc1644.pdf) - This application note describes how an AVR with the Store Program Memory (SPM)
+- **[AVR109: Self Programming](http://ww1.microchip.com/downloads/en/Appnotes/doc1644.pdf)** - This application note describes how an AVR with the Store Program Memory (SPM)
 instruction can be configured for Self-programming. 
 
 ### iMX
@@ -108,9 +108,9 @@ to download and execute code on Freescale i.MX5/i.MX6/i.MX7 and Vybrid SoCs thro
 Depending on the board, there is usually some kind of recovery button to bring the SoC into serial download boot mode, 
 check documentation of your hardware.  The utility support USB and UART as serial link.
 
-- **[mfgtools/uuu](https://github.com/NXPmicro/mfgtools) - Freescale/NXP I.MX Chip image deploy tools.
+- **[mfgtools/uuu](https://github.com/NXPmicro/mfgtools)** - Freescale/NXP I.MX Chip image deploy tools.
 
-- **[utp_com](https://github.com/ixonos/utp_com.git) - utp_com tool is used to send commands to hardware via Freescale's UTP protocol.
+- **[utp_com](https://github.com/ixonos/utp_com.git)** - utp_com tool is used to send commands to hardware via Freescale's UTP protocol.
 
 ### Other
 
