@@ -51,8 +51,8 @@ int SCSIGenericTransportDevice::send(struct UTP_CDB *message, void *dxferp, int 
 #else 
 	// MAC doesn't support generic scsi operations without writing kernel code.
 	fprintf(stderr, "Operation not supported under this operating system.\n");
-    return ret;  
 #endif
+    return ret;  
 }
 
 int SCSIGenericTransportDevice::send_sg(uint8_t *header, int headerlen, void *dxferp, int dxferp_len, uint8_t *reply_code)
@@ -86,7 +86,7 @@ int SCSIGenericTransportDevice::send_sg(uint8_t *header, int headerlen, void *dx
 #else 
 	// MAC doesn't support generic scsi operations without writing kernel code.
 	fprintf(stderr, "Operation not supported under this operating system.\n");
-    return ret;  
 #endif
+    return ret;  
 }
 
