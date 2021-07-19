@@ -59,4 +59,5 @@ $ make
 
 ```
 sudo apt-get install libusb-1.0-0-dev
+sudo apt-get install libsgutils2-dev
 ```
