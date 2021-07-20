@@ -110,6 +110,7 @@ SET(COMMON_SRC
     src/bytesex.cpp
     src/config/environment.cpp
     src/config/global_config.cpp
+    src/arch/imx/imx_uart_magic.cpp
 )
 
 link_directories(${LIBUSB_LIBRARY_DIRS} )
