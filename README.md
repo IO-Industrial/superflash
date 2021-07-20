@@ -59,6 +59,7 @@ $ make
 
 ```
 sudo apt-get install libusb-1.0-0-dev
+sudo apt-get install libsgutils2-dev
 ```
 
 ## Installing Required Packages on Mac OS-X
@@ -120,3 +121,4 @@ cross compiling with gcc toolchains for msp430, propeller, and AVR.
 - **[BOSSA](https://github.com/shumatech/BOSSA)** - BOSSA is a flash programming utility for Atmel's SAM family of flash-based 
 ARM microcontrollers. The motivation behind BOSSA is to create a simple, easy-to-use, open source utility to replace 
 Atmel's SAM-BA software. BOSSA is an acronym for Basic Open Source SAM-BA Application to reflect that goal. 
+
