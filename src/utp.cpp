@@ -18,11 +18,12 @@
  */
 #include <getopt.h>
 #include <iostream>
-// #include "spdlog/spdlog.h"
-// #include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_sinks.h"
 #include "errors.h"
 #include "commands/utp_command.h"
 #include "version.h"
+#include "config/global_config.h"
 
 using namespace std;
 // using namespace spdlog;
@@ -53,6 +54,8 @@ int main(int argc, char **argv)
 	char *file_data = NULL;
 	
     printf("UTP utility %s\n", SUPER_FLASH_RELEASE);
+
+    GlobalConfiguration &config  = GlobalConfiguration::instance();
 
     // Parse parameters
 	while ((c = getopt(argc, argv, "c:d:f:")) != -1)
@@ -88,10 +91,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    // // get version
-    // UTPVersion ver;
-    // ver.execute(dev);
-
     if (command.size()==0)
     {
         printf("No command specified.  Aborting.\n");
@@ -107,7 +106,6 @@ int main(int argc, char **argv)
         utp_send_command_with_wait(dev, command);
     }
     
-
     printf("Done.\n");
 
     dev->Close();
