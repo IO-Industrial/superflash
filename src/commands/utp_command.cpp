@@ -48,19 +48,6 @@ void UTPCommand::reset()
 
 bool UTPCommand::isReplyGood() const
 {
-
-    // if (m_reply.respose_code != 0x70) {
-    //     printf("invalid response code.\n");
-    // }
-    // if (m_reply.additional_sense_code != 0x80) {
-    //     printf("invalid additional sense code.\n");
-    // }
-    // if (m_reply.sense_key != 0x09)
-    // {
-    //     printf("invalid sense key.\n");
-    // }
-
-    printf("SENSE BUFFER:\n");
     
     hexdump((void *)&m_reply, sizeof(m_reply));
 
