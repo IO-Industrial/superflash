@@ -21,6 +21,9 @@
 #include <iostream>
 
 #include "usb/usb_config_descriptor.h"
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_sinks.h"
 
 namespace superflash {
 namespace usb {
@@ -85,21 +88,23 @@ namespace usb {
         {
             get_device_descriptor();
             USBConfigDescriptor dconfig(_device);
-            printf("%04x:%04x (bus %d, device %d) bNumInterfaces:%i\n",
+            
+            SPDLOG_TRACE("{:04x}:{:04x} (bus {}, device {}) bNumInterfaces:{}", 
                 _descriptor.idVendor, _descriptor.idProduct,
                 get_bus_number(), get_device_address(),
-                dconfig.config->bNumInterfaces);
+                dconfig.config->bNumInterfaces);           
 
             for (int j = 0; j < dconfig.config->bNumInterfaces; j++) {
                 const struct libusb_interface *inter = &dconfig.config->interface[j];
-                printf("  alternates:%i\n", inter->num_altsetting);
+                SPDLOG_TRACE("  alternates:{}", inter->num_altsetting);
                 for (int k = 0; k < inter->num_altsetting; k++) {
                     const struct libusb_interface_descriptor *interdesc = &inter->altsetting[k];
-                    printf("    Interface Number: %i, Number of endpoints: %i\n",
-                            interdesc->bInterfaceNumber, interdesc->bNumEndpoints);
+                    SPDLOG_TRACE("    Interface Number: {}, Number of endpoints: {}",
+                        interdesc->bInterfaceNumber, interdesc->bNumEndpoints
+                    );
                     for (int l = 0; l < interdesc->bNumEndpoints; l++) {
                         const struct libusb_endpoint_descriptor *epdesc = &interdesc->endpoint[l];
-                        printf("      Descriptor Type: %x, EP Address: %i, wMaxPacketSize: %i\n",
+                        SPDLOG_TRACE("      Descriptor Type: {:x}, EP Address: {}, wMaxPacketSize: {}",
                                 epdesc->bDescriptorType, epdesc->bEndpointAddress, epdesc->wMaxPacketSize);
                     }
                 }

@@ -58,6 +58,7 @@ void scan_usb()
         struct sf_usb_device *tmp = usb_is_valid_device(dev);
         if (tmp != NULL)
         {
+            SPDLOG_TRACE("FOUND: {:04x}:{:04x} {}", tmp->vid, tmp->pid, tmp->march_description);
             dev.dump();
         }
     }
