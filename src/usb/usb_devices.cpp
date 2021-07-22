@@ -17,6 +17,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
+#include <cstddef>
 #include "usb/usb_devices.h"
 
 namespace {
@@ -29,7 +30,9 @@ const uint32_t NETCHIP_TECH_PID = 0x0525;
 const char *IMX_6_STR = "imx.6";
 }
 
-
+namespace superflash {
+namespace usb {
+    
 // 15a2   Freescale Semiconductor, Inc.
 // 	0038  9S08JS Bootloader
 // 	003b  USB2CAN Application for ColdFire DEMOJM board
@@ -171,7 +174,37 @@ struct sf_usb_device sf_usb_devices[]=
         .vendor = VENDOR_UNKNOWN,
         .protocols = UKNOWN_PROTOCOL,
     }
-
-
 };
 
+struct sf_usb_device *find(uint32_t vid, uint32_t pid)
+{
+    struct sf_usb_device *ptr = NULL;
+
+    for (int i = 0; (sf_usb_devices[i].vid > 0); i++)
+    {
+        if ((vid == sf_usb_devices[i].vid) && (pid == sf_usb_devices[i].pid))
+        {
+            return &sf_usb_devices[i];
+        }
+    }
+
+    return ptr;
+}
+
+struct sf_usb_device *usb_is_valid_device(USBDevice &dev)
+{
+    struct sf_usb_device *ptr = NULL;
+
+    for (int i = 0; (sf_usb_devices[i].vid > 0); i++)
+    {
+        if (dev.is_VID_PID(sf_usb_devices[i].vid, sf_usb_devices[i].pid))
+        {
+            return &sf_usb_devices[i];
+        }
+    }
+
+    return ptr; 
+}
+
+}
+}

@@ -25,6 +25,7 @@
 #include "spdlog/sinks/stdout_sinks.h"
 #include "usb/usb_bus.h"
 #include "usb/usb_device.h"
+#include "usb/usb_devices.h"
 #include "config/board_config.h"
 
 using namespace std;
@@ -54,7 +55,11 @@ void scan_usb()
     std::vector<USBDevice> list = usb.get_device_list();
     for (int i = 0; i < list.size(); i++) {
         USBDevice dev = list[i];
-        dev.dump();
+        struct sf_usb_device *tmp = usb_is_valid_device(dev);
+        if (tmp != NULL)
+        {
+            dev.dump();
+        }
     }
 
     usb.deinitialize();

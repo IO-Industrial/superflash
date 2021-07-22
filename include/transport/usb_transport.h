@@ -19,3 +19,6 @@
 #include "transport/transport.h"
 
 class USBTransportDevice : public TransportDevice
+{
+
+};

@@ -19,6 +19,10 @@
  */
 #pragma once
 #include <stdint.h>
+#include "usb/usb_device.h"
+
+namespace superflash {
+namespace usb {
 
 enum eVENDORS
 {
@@ -58,3 +62,20 @@ struct sf_usb_device
 //! However, if this combination of vid and pid cannot be found, a NULL
 //! will be returned.
 struct sf_usb_device *find(uint32_t vid, uint32_t pid);
+
+//! \brief Search for this device in our supported device array
+//!
+//! This function will search for the device in our supported
+//! device array.  
+//!
+//! \param  dev USB device object
+//!
+//! \returns
+//!
+//! If this device is supported, a pointer to the structure will be returned.
+//! However, if this combination of vid and pid cannot be found, a NULL
+//! will be returned.
+struct sf_usb_device *usb_is_valid_device(USBDevice &dev);
+
+}
+}
