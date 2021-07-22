@@ -19,17 +19,20 @@
 #include <getopt.h>
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 
-#include "spdlog/spdlog.h"
+#include "config/board_config.h"
 #include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
 #include "usb/usb_bus.h"
 #include "usb/usb_device.h"
 #include "usb/usb_devices.h"
-#include "config/board_config.h"
 
 using namespace std;
 using namespace superflash::usb;
+
+bool g_wait = false;
 
 void print_banner(void)
 {
@@ -42,27 +45,35 @@ void print_usage(void)
             "\n"
             "Where OPTIONS are\n"
             "   -h --help		Show this help\n"
-            "   -s --scanusb    Scan USB buses to identify devices"
+            "   -s --scanusb    Scan USB buses to identify devices\n"
+            "   -w --wait       Wait for USB device to appear"
             "\n";
 }
 
 void scan_usb()
 {
-    printf("Scan USB bus for devices.\n");
+    spdlog::info("Scan USB bus for devices.");
     USB usb;
     usb.initialize();
+    int retries = 1;
 
-    std::vector<USBDevice> list = usb.get_device_list();
-    for (int i = 0; i < list.size(); i++) {
-        USBDevice dev = list[i];
-        struct sf_usb_device *tmp = usb_is_valid_device(dev);
-        if (tmp != NULL)
-        {
-            SPDLOG_TRACE("FOUND: {:04x}:{:04x} {}", tmp->vid, tmp->pid, tmp->march_description);
-            dev.dump();
+    while (retries > 0 || g_wait) {
+        std::vector<USBDevice> list = usb.get_device_list();
+        for (int i = 0; i < list.size(); i++) {
+            USBDevice dev = list[i];
+            struct sf_usb_device* tmp = usb_is_valid_device(dev);
+            if (tmp != NULL) {
+                SPDLOG_TRACE("FOUND: {:04x}:{:04x} {}", tmp->vid, tmp->pid, tmp->march_description);
+                dev.dump();
+                usb.deinitialize();
+                return;
+            }
         }
+        retries--;
+        usleep(25000);
     }
 
+    spdlog::info("Found 0 supported devices.\n");
     usb.deinitialize();
 }
 
@@ -70,6 +81,7 @@ static const struct option long_options[] = {
     { "help", no_argument, 0, 'h' },
     { "scanusb", no_argument, 0, 's' },
     { "board", required_argument, 0, 'b' },
+    { "wait", no_argument, 0, 'w' },
     { 0, 0, 0, 0 },
 };
 
@@ -82,20 +94,18 @@ int main(int argc, char** argv)
     spdlog::set_level(spdlog::level::trace);
 
     print_banner();
-    if (argc < 2)
-    {
+    if (argc < 2) {
         print_usage();
         return 0;
     }
 
-    while ((c = getopt_long(argc, argv, "hsb:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "hsbw:", long_options, NULL)) != -1) {
         switch (c) {
         case 'h':
             print_usage();
             return 0;
         case 's':
             scanusb = 1;
-            
             break;
         case 'b':
             boardconf = optarg;
@@ -105,7 +115,13 @@ int main(int argc, char** argv)
                  << "requires an argument. aborting.\n";
             return 1;
             break;
+        case 'w':
+            printf("Waiting for device.\n");
+            g_wait = true;
+            break;
         case '?':
+            print_usage();
+            return 0;
         default: // invalid option
             cerr << argv[0] << ": option '-" << (char)optopt << "is invalid: aborting.\n";
             return 1;
@@ -117,9 +133,8 @@ int main(int argc, char** argv)
         scan_usb();
     }
 
-    if (boardconf.size())
-    {
-      BoardConfig bcfg;
-      bcfg.load(boardconf);
+    if (boardconf.size()) {
+        BoardConfig bcfg;
+        bcfg.load(boardconf);
     }
 }

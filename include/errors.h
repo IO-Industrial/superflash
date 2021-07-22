@@ -19,11 +19,10 @@
 #ifndef _ERRORS_H_
 #define _ERRORS_H_
 
-enum sf_ERROR
-{
+enum sf_ERROR {
     SF_OK = 0,
     SF_ERR_NO_TRANSPORT_SPEC,
-    SF_ERR_OPENING_TRANSPORT, 
+    SF_ERR_OPENING_TRANSPORT,
     SF_ERR_SEND_UTP,
     SF_ERR_RECV_CORRUPTED_SENSE,
     SF_ERR_DEVICE_BUSY,
@@ -35,4 +34,4 @@ enum sf_ERROR
 
 void SF_ERROR(enum sf_ERROR error_number);
 
-#endif 
+#endif

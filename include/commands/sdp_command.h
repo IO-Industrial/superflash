@@ -22,22 +22,20 @@
 
 //! \brief Command interface abstract base class
 //!
-//! This is the base class for commands, which a part of command 
+//! This is the base class for commands, which a part of command
 //! design pattern.
 //!
-class SDPCommand : public Command 
-{
+class SDPCommand : public Command {
 public:
-
     //! \brief Default constructor
-    SDPCommand() {}
+    SDPCommand() { }
 
     //! \brief Default virtual destructor
     virtual ~SDPCommand() {};
 
     //! \brief Execute a stand alone command
     //!
-    //! \returns    
+    //! \returns
     virtual int execute() { return 0; };
 
     //! \brief Execute Command against transport
@@ -45,36 +43,24 @@ public:
     //! \param transport    pointer to transport device class
     //virtual int execute(TransportDevice *transport) = 0;
 
-    protected:
-
+protected:
     struct sdp_command m_msg;
 };
 
-class SDPWriteFileCommand : public Command
-{
-
+class SDPWriteFileCommand : public Command {
 };
 
-class SDPJumpCommand : public Command
-{
+class SDPJumpCommand : public Command {
 };
 
-class SDPWriteDCDCommand : public Command
-{
-
+class SDPWriteDCDCommand : public Command {
 };
 
-class SDPStatusCommand : public Command
-{
-
+class SDPStatusCommand : public Command {
 };
 
-class SDPWriteRegCommand : public Command
-{
-
+class SDPWriteRegCommand : public Command {
 };
 
-class SDPReadRegCommand : public Command
-{
-
+class SDPReadRegCommand : public Command {
 };

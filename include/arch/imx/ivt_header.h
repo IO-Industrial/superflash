@@ -18,17 +18,17 @@
 #pragma once
 
 /* Command tags and parameters */
-#define IVT_HEADER_TAG			0xD1
-#define IVT_VERSION			0x40
-#define IVT_VERSION_IMX8M		0x41
-#define DCD_HEADER_TAG			0xD2
-#define DCD_VERSION			0x40
-#define DCD_VERSION_IMX8M		0x41
+#define IVT_HEADER_TAG 0xD1
+#define IVT_VERSION 0x40
+#define IVT_VERSION_IMX8M 0x41
+#define DCD_HEADER_TAG 0xD2
+#define DCD_VERSION 0x40
+#define DCD_VERSION_IMX8M 0x41
 
-#pragma pack (1)
+#pragma pack(1)
 struct ivt_header {
-        uint8_t tag;
-        uint16_t length;
-        uint8_t version;
+    uint8_t tag;
+    uint16_t length;
+    uint8_t version;
 };
-#pragma pack ()
+#pragma pack()

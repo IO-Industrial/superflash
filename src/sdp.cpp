@@ -16,58 +16,52 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#include "commands/sdp_command.h"
+#include "config/global_config.h"
+#include "errors.h"
+#include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
+#include "version.h"
 #include <getopt.h>
 #include <iostream>
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/stdout_sinks.h"
-#include "errors.h"
-#include "commands/sdp_command.h"
-#include "version.h"
-#include "config/global_config.h"
 
 using namespace std;
 // using namespace spdlog;
 
-const char *usage[] = {
+const char* usage[] = {
     "Usage: sdp [options]",
-	""
+    ""
 };
 
 void print_usage()
 {
-    for (int i=0; *usage[i]; i++)
-    {
+    for (int i = 0; *usage[i]; i++) {
         printf("%s\n", usage[i]);
     }
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     int c;
     std::string device_name = "";
-	std::string command = "";
-	char *file_name = NULL;
-	char *file_data = NULL;
-	
+    std::string command = "";
+    char* file_name = NULL;
+    char* file_data = NULL;
+
     printf("SDP utility %s\n", SUPER_FLASH_RELEASE);
 
-    GlobalConfiguration &config  = GlobalConfiguration::instance();
+    GlobalConfiguration& config = GlobalConfiguration::instance();
 
     // Parse parameters
-	while ((c = getopt(argc, argv, "c:d:f:")) != -1)
-	{
-		switch (c)
-		{
-			default:
-				print_usage();
-				return 1;
-		}
-	}
+    while ((c = getopt(argc, argv, "c:d:f:")) != -1) {
+        switch (c) {
+        default:
+            print_usage();
+            return 1;
+        }
+    }
 
-   
     printf("Done.\n");
 
     return 0;
 }
-
-

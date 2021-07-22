@@ -18,6 +18,6 @@
 #ifndef _BYTESEX_H_
 #define _BYTESEX_H_
 
-void hexdump(void *ptr, int buflen);
+void hexdump(void* ptr, int buflen);
 
 #endif

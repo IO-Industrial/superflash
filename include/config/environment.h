@@ -45,8 +45,7 @@
 //!   cout << env["HELLO"] << " should equal: " << env.get("HELLO") << endl;
 //! \endcode
 //!
-class Environment
-{
+class Environment {
 public:
     //! Get environment variable
     //!
@@ -59,7 +58,7 @@ public:
     //! \returns
     //!  	Returns empty string if no environment variable is defined,
     //!		or the environment variable as a string.
-    static std::string get(std::string const& a_key) ;
+    static std::string get(std::string const& a_key);
 
     //! Get environment variable
     //!
@@ -72,7 +71,7 @@ public:
     //! \returns
     //!  	Returns empty string if no environment variable is defined,
     //!		or the environment variable as a string.
-    static std::string get(const char * a_key) ;
+    static std::string get(const char* a_key);
 
     //! Add or modify an environment variable
     //!
@@ -94,7 +93,7 @@ public:
     //!		This function returns the result from the setenv call.  A 0
     //! 	is returned if the operation was successful, else -1 if
     //!		there was insufficient space.
-    static int set(const char *a_key, const char *a_value);
+    static int set(const char* a_key, const char* a_value);
 
     //! Check to see if an environment variable exists.
     //!
@@ -103,7 +102,7 @@ public:
     //! \returns
     //! 	If the environment variable exists, it returns true.
     //!		If it does not, this function returns false.
-    static bool isExists(const char *a_key);
+    static bool isExists(const char* a_key);
 
     //! Check to see if an environment variable exists.
     //!
@@ -112,7 +111,7 @@ public:
     //! \returns
     //! 	If the environment variable exists, it returns true.
     //!		If it does not, this function returns false.
-    static bool isExists(std::string &a_key);
+    static bool isExists(std::string& a_key);
 
     //! Erase (unset) a specific environment variable.
     //!
@@ -132,7 +131,7 @@ public:
     //!		This function returns the result from the setenv call.  A 0
     //! 	is returned if the operation was successful, else -1 if
     //!		there was an error.
-    int erase(const char *a_key);
+    int erase(const char* a_key);
 
     //! Clear the environment
     //!
@@ -143,8 +142,8 @@ public:
     //! returns a vector of all environment variables.
     //std::vector<std::string> getAll();
 
-    const std::string operator[](const char *a_name) const;
-    const std::string operator[](const std::string &a_name) const;
+    const std::string operator[](const char* a_name) const;
+    const std::string operator[](const std::string& a_name) const;
 
     //! Retrieve users's home path
     //!
@@ -157,5 +156,4 @@ public:
     //! - OS X getpwuid for GIU applications.
     //!
     static std::string home_path();
-
 };

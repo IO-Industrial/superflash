@@ -17,14 +17,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 #pragma once
-#include <string>
-#include <iostream>
 #include "yaml-cpp/yaml.h"
+#include <iostream>
+#include <string>
 
-class BoardConfig
-{
+class BoardConfig {
 public:
-    void load(std::string &filename)
+    void load(std::string& filename)
     {
         try {
 
@@ -43,9 +42,8 @@ public:
             const YAML::Node& device = config["device"];
             name = device["name"].as<std::string>();
             std::cout << "device name: " << name << "\n";
-        
 
-        } catch(const YAML::ParserException& ex) {
+        } catch (const YAML::ParserException& ex) {
             std::cout << ex.what() << std::endl;
         }
     }

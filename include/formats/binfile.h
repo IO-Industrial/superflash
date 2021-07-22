@@ -25,37 +25,32 @@
 namespace superflash {
 namespace formats {
 
-class simple_bin_file
-{
-public:
+    class simple_bin_file {
+    public:
+        int load(const std::string& filename)
+        {
+            std::ifstream fin { filename, std::ios::binary };
+            fin.seekg(0, fin.end);
+            size_t len = fin.tellg();
+            fin.seekg(0, fin.beg);
 
-    int load(const std::string& filename)
-    {
-        std::ifstream fin { filename, std::ios::binary };
-        fin.seekg(0, fin.end);
-        size_t len = fin.tellg();
-        fin.seekg(0, fin.beg);
+            _data.resize(len);
+            fin.read((char*)_data.data(), len);
+            return _data.size();
+        }
 
-        _data.resize(len);
-        fin.read((char*)_data.data(), len);
-        return _data.size();
-    }
+    private:
+        std::vector<uint8_t> _data;
 
-private:
+        friend std::ostream& operator<<(std::ostream& sout, simple_bin_file& hex);
+        friend std::istream& operator>>(std::istream& sin, simple_bin_file& hex);
+    };
 
-    std::vector<uint8_t> _data;
-
-    friend std::ostream& operator<<(std::ostream& sout, simple_bin_file& hex);
-    friend std::istream& operator>>(std::istream& sin, simple_bin_file& hex);
-    
-};
-
-//! \brief Input stream overload operator
-//!
-//! Operator overloaded to decoded data streamed in from a file, cin, etc.
-std::istream& operator>>(std::istream& sin, simple_bin_file& src);
-std::ostream& operator<<(std::ostream& sout, simple_bin_file& hex);
+    //! \brief Input stream overload operator
+    //!
+    //! Operator overloaded to decoded data streamed in from a file, cin, etc.
+    std::istream& operator>>(std::istream& sin, simple_bin_file& src);
+    std::ostream& operator<<(std::ostream& sout, simple_bin_file& hex);
 
 }
 }
-

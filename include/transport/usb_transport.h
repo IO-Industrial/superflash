@@ -18,7 +18,5 @@
 #pragma once
 #include "transport/transport.h"
 
-class USBTransportDevice : public TransportDevice
-{
-
+class USBTransportDevice : public TransportDevice {
 };

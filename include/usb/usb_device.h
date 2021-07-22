@@ -22,8 +22,8 @@
 
 #include "usb/usb_config_descriptor.h"
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
 
 namespace superflash {
 namespace usb {
@@ -88,31 +88,83 @@ namespace usb {
         {
             get_device_descriptor();
             USBConfigDescriptor dconfig(_device);
-            
-            SPDLOG_TRACE("{:04x}:{:04x} (bus {}, device {}) bNumInterfaces:{}", 
+
+            SPDLOG_TRACE("{:04x}:{:04x} (bus {}, device {}) bNumInterfaces:{}",
                 _descriptor.idVendor, _descriptor.idProduct,
                 get_bus_number(), get_device_address(),
-                dconfig.config->bNumInterfaces);           
+                dconfig.config->bNumInterfaces);
 
             for (int j = 0; j < dconfig.config->bNumInterfaces; j++) {
-                const struct libusb_interface *inter = &dconfig.config->interface[j];
+                const struct libusb_interface* inter = &dconfig.config->interface[j];
                 SPDLOG_TRACE("  alternates:{}", inter->num_altsetting);
                 for (int k = 0; k < inter->num_altsetting; k++) {
-                    const struct libusb_interface_descriptor *interdesc = &inter->altsetting[k];
+                    const struct libusb_interface_descriptor* interdesc = &inter->altsetting[k];
                     SPDLOG_TRACE("    Interface Number: {}, Number of endpoints: {}",
-                        interdesc->bInterfaceNumber, interdesc->bNumEndpoints
-                    );
+                        interdesc->bInterfaceNumber, interdesc->bNumEndpoints);
                     for (int l = 0; l < interdesc->bNumEndpoints; l++) {
-                        const struct libusb_endpoint_descriptor *epdesc = &interdesc->endpoint[l];
+                        const struct libusb_endpoint_descriptor* epdesc = &interdesc->endpoint[l];
                         SPDLOG_TRACE("      Descriptor Type: {:x}, EP Address: {}, wMaxPacketSize: {}",
-                                epdesc->bDescriptorType, epdesc->bEndpointAddress, epdesc->wMaxPacketSize);
+                            epdesc->bDescriptorType, epdesc->bEndpointAddress, epdesc->wMaxPacketSize);
                     }
                 }
             }
         }
 
+        //! \brief Open USB device and claim interface
+        //!
+        //! \returns
+        //! \retval false   error has occurred trying to open and claim the usb interface.
+        //! \retval true    success.
+        bool open_device()
+        {
+            SPDLOG_TRACE("Trying to open device.");
+            int err;
+            int config = 0;
+
+            // retry up to 50 times and sleep 500ms in between retries.
+            for (int retries = 0; retries < 50; retries++) {
+                _handle = NULL;
+                err = libusb_open(_device, &_handle);
+                if (_handle)
+                    break;
+
+                usleep(500000);
+            }
+
+            if (!_handle) {
+                spdlog::error("Could not open the device.");
+                return false;
+            }
+
+            libusb_get_configuration(_handle, &config);
+            SPDLOG_TRACE("bConfigurationValue = 0x{:x}", config);
+
+            if (libusb_kernel_driver_active(_handle, 0)) {
+                libusb_detach_kernel_driver(_handle, 0);
+            }
+
+            if (libusb_claim_interface(_handle, 0)) {
+                spdlog::error("failed to claim interface.");
+                return false;
+            }
+
+            SPDLOG_TRACE("interface 0 claimed.");
+
+            return true;
+        }
+
+        //! \brief Close the USB device
+        void close_device()
+        {
+            libusb_release_interface(_handle, 0);
+            libusb_close(_handle);
+        }
+
+        int transfer_bulk();
+        int transfer_hid();
+
     private:
-        libusb_device_handle* handle_;
+        libusb_device_handle* _handle;
         struct libusb_device* _device = NULL;
         struct libusb_device_descriptor _descriptor;
     };

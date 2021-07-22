@@ -22,11 +22,11 @@
 
 //! \brief MAGIC Sequence for UART
 //!
-//! While SDP protocol is the same over serial as it is over USB, 
+//! While SDP protocol is the same over serial as it is over USB,
 //! the UART code will push a "magic" bytes to tell the target device we
 //! are attempting to talk to it with SDP.   The target device will
 //! respond with magic bytes as the ack.
-extern uint8_t uart_magic[] ;
+extern uint8_t uart_magic[];
 
 //! \brief MAGIC Sequence for Vybrid CAN
 //!
@@ -38,7 +38,7 @@ extern uint8_t uart_magic[] ;
 //!
 //! Once the host receives back the same pattern 0x67898967 from the device, the host reaches a state
 //! called “associated”.
-extern uint8_t vybrid_can_magic[] ;
+extern uint8_t vybrid_can_magic[];
 
-extern uint8_t vybrid_HAB_development[] ;
-extern uint8_t vybrid_HAD_production[] ;
+extern uint8_t vybrid_HAB_development[];
+extern uint8_t vybrid_HAD_production[];

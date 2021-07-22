@@ -34,7 +34,6 @@ namespace superflash {
  * Intel Hex     | Intel hex file format
  */
 
-
 /** 
  * \brief Firmware File Formats
  * 
@@ -58,5 +57,3 @@ namespace formats {
 /*! @} End of Doxygen Groups*/
 
 }
-
-

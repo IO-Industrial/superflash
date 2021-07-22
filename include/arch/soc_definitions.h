@@ -21,9 +21,8 @@
 //! \brief Protocol/Bus enumeration
 //!
 //! This enumeration lays out the preferred transports/busses/protocols
-//! to use to talk to the target device. 
-enum eProtocolBus
-{
+//! to use to talk to the target device.
+enum eProtocolBus {
     eUSB_HID,
     eUSB_BULK,
     eUART_SERIAL,
@@ -33,9 +32,8 @@ enum eProtocolBus
 //! \brief SoC Device Profile
 //!
 //! This structure describes what a device is, for us to talk to it.
-struct SoCDeviceProfile
-{
-    //! \brief Machine Architecture 
+struct SoCDeviceProfile {
+    //! \brief Machine Architecture
     //! Short description ot machine architecture
     //! example "vybrid"
     std::string march;
@@ -48,7 +46,7 @@ struct SoCDeviceProfile
     //!
     //! Hint to tell us how to address this device.
     enum eProtocolBus _protocol;
-    
+
     uint32_t max_packet_size;
 
     uint32_t dcd_addr;
@@ -56,6 +54,4 @@ struct SoCDeviceProfile
     uint32_t ram_address;
 
     uint32_t ram_size;
-
 };
-

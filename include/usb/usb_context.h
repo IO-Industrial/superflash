@@ -25,12 +25,12 @@ namespace usb {
 
     //! \brief USB Context class
     //!
-    //! This class wraps a libusbcontext pointer.  This pointer is a concept of 
-    //! libusb, created when the library is initialized. 
+    //! This class wraps a libusbcontext pointer.  This pointer is a concept of
+    //! libusb, created when the library is initialized.
     //!
     //! Since it is possible that libusb may be used simultaneously from two independent
-    //! libraries linked into the same executable, this is used by libusb to make 
-    //! sure that there aren't any collisions. 
+    //! libraries linked into the same executable, this is used by libusb to make
+    //! sure that there aren't any collisions.
     //!
     //! This pointer and any allocated memory are owned by libusb.  Contexts are
     //! destroyed during libusb_exit.
@@ -38,7 +38,6 @@ namespace usb {
     //! Note: this concept was added in libusb 1.0; it does not exist in libusb
     class USBContext {
     public:
-
         //! \brief Default constructor
         USBContext()
             : _usbcontext(NULL)
@@ -47,7 +46,7 @@ namespace usb {
 
         //! \brief Specialized constructor
         //!
-        //! \param  ctx  - pointer to libusb usbcontext 
+        //! \param  ctx  - pointer to libusb usbcontext
         //!
         USBContext(libusb_context* ctx)
         {

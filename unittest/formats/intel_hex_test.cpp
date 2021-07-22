@@ -17,9 +17,9 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#include "formats/intel_hex.h"
 #include "gtest/gtest.h"
 #include <stdio.h>
-#include "formats/intel_hex.h"
 
 using namespace superflash::formats;
 
@@ -33,7 +33,7 @@ const char* test_hex_file[] = {
     "",
 };
 
-const char *text_hex_file2[] = {
+const char* text_hex_file2[] = {
     ":020000020000FC\n",
     ":020000040000FA\n",
     ":1000000000FF0004000400040004000400040004D5\n",
@@ -59,15 +59,16 @@ const char *text_hex_file2[] = {
 };
 
 //! Checksum should be E2
-const char *hex_chksum = ":0300300002337A1E\n";
+const char* hex_chksum = ":0300300002337A1E\n";
 
 namespace {
 // Tests the Increment() method.
 
-TEST(IntelHex, default_ctor) {
-   intel_hexfile hex;
-   ASSERT_TRUE(hex.empty());
-   ASSERT_EQ(hex.size(), 0);
+TEST(IntelHex, default_ctor)
+{
+    intel_hexfile hex;
+    ASSERT_TRUE(hex.empty());
+    ASSERT_EQ(hex.size(), 0);
 }
 
 }; // namespace

@@ -68,6 +68,18 @@ transferred into the target board/device.  Each manufacturer
 supports different file formats (Intel Hex, Motorola S Record, 
 ELF (Executable and Linkable Format), etc.).
 
+What You Will Need
+------------------
+
+You will need to have some understanding of how your embedded device/target board
+works.  You will also have to have the required cables.  In some cases schematics
+may be helpful, as sometimes jumpers can be set to enable flash loading.
+
+You will need to build the software required, whether it be a monolithic executable,
+or the linux trifecta -- u-boot, device tree, and linux kernel.
+
+Unfortunately, these are unique to the target board you are using.
+
 Supported Protocols
 -------------------
 
