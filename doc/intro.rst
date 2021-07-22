@@ -26,6 +26,16 @@ sometimes in random formats.
 
 Enough already.
 
+Envisioned Use Cases
+--------------------
+
+Ultimately, this project is envisioned to be used in the following
+scenarios:
+
+- Initial development, board bring up and development; and
+- RMA/returns - unbricking devices for diagnostics; and
+- Continous Integration and testing.
+
 Basic Concepts
 --------------
 
@@ -69,6 +79,9 @@ release:
 +===============+==============+=============================================================+
 | Freescale UTP | SCSI generic | Freescale Update Transport Protocol (UTP) is only           |
 |               |              | supported via SCSI generic commands (Linux ONLY).           |
++---------------+--------------+-------------------------------------------------------------+
+| Freescale SDP | USB HID/BULK | Freescale Serial Download Protocol (SDP) is only            |
+|               |              | supported via USB.                                          |
 +---------------+--------------+-------------------------------------------------------------+
 
 Acknowledgements
