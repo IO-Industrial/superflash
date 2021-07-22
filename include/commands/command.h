@@ -36,10 +36,6 @@ public:
     //!
     virtual int execute() = 0;
 
-    //! \brief Execute Command against transport
-    //!
-    //! \param transport    pointer to transport device class
-    //virtual int execute(TransportDevice *transport) = 0;
 };
 
 
