@@ -18,6 +18,7 @@
  */
 #pragma once
 #include <stdint.h>
+#include "portable.h"
 
 #define SDP_READ_REG 0x0101
 #define SDP_WRITE_REG 0x0202
@@ -86,5 +87,66 @@ struct sdp_command {
     //!
     //! Not used in Vybrid ROM
     uint8_t rsvd;
+
+	void fill_read_reg(unsigned addr, unsigned cnt)
+	{
+		cmd = SDP_READ_REG;
+		addr = BE32(addr);
+		format = 0x20;
+		cnt = BE32(cnt);
+		data = BE32(0);
+		rsvd = 0x00;
+	}
+
+	void fill_write_reg(unsigned addr, unsigned val)
+	{
+		cmd = SDP_WRITE_REG;
+		addr = BE32(addr);
+		format = 0x20;
+		cnt = BE32(4);
+		data = BE32(val);
+		rsvd = 0x00;
+	}
+
+	void fill_status()
+	{
+		cmd = SDP_ERROR_STATUS;
+		addr = 0;
+		format = 0;
+		cnt = 0;
+		data = 0;
+		rsvd = 0;
+	}
+
+	void fill_dl_dcd(unsigned dcd_addr, int length)
+	{
+		cmd = SDP_WRITE_DCD;
+		addr = BE32(dcd_addr);
+		format = 0;
+		cnt = BE32(length);
+		data = 0;
+		rsvd = 0;
+	}
+
+	void fill_write_file(unsigned dladdr, unsigned fsize, unsigned char type)
+	{
+		cmd = SDP_WRITE_FILE;
+		addr = BE32(dladdr);
+		format = 0;
+		cnt = BE32(fsize);
+		data = 0;
+		rsvd = type;
+	}
+
+	void fill_jump(unsigned header_addr)
+	{
+		cmd = SDP_JUMP_ADDRESS;
+		addr = BE32(header_addr);
+		format = 0;
+		cnt = 0;
+		data = 0;
+		rsvd = 0x00;
+	}
+
 };
 #pragma pack()
