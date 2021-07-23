@@ -18,7 +18,7 @@
  */
 #pragma once
 #include "commands/command.h"
-#include "commands/sdp.h"
+#include "protocols/sdp.h"
 
 //! \brief Command interface abstract base class
 //!

@@ -17,4 +17,4 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 #include "commands/sdp_command.h"
-#include "commands/sdp.h"
+#include "protocols/sdp.h"
