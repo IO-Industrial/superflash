@@ -116,7 +116,6 @@ namespace usb {
 
         libusb_device** _devices;
         int _device_count;
-        //libusb_context* _usbcontext = NULL;
 
         std::shared_ptr<USBDevice> _usb_device;
         USBContext _usbctx;

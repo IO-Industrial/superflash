@@ -43,16 +43,51 @@ namespace usb {
     // 	0061  i.MX 6Solo/6DualLite SystemOnChip in RecoveryMode
 
     struct sf_usb_device sf_usb_devices[] = {
+
+        { .vid = FREESCALE_PID,
+            .pid = 0x006a,
+            .march_description = "Vybrid VFXXX SoC",
+            .usb_hint = USB_HID,
+            .max_transfer = 1024,
+            .dcd_addr = 0x3f400000,
+            .ram_start = 0x10000000
+        },
+
+        ///////////////////////////////////////////////////////////////////
+        // untested below 
+
         // Sigmatel
         {
             .vid = SIGMATEL_PID,
             .pid = 0x3780,
-            .march_description = "i.MX53 Arm Cortex A9, 256KB memory" },
+            .march_description = "i.MX53 Arm Cortex A9, 256KB memory", 
+            .usb_hint = USB_UNDEFINED
+        },
         // Freescale Semiconductor
         {
             .vid = FREESCALE_PID,
+            .pid = 0x0038,
+            .march_description = "9S08JS Bootloader",
+            .usb_hint = USB_UNDEFINED
+        },
+        { 
+            .vid = FREESCALE_PID,
+            .pid = 0x003b,
+            .march_description = "9USB2CAN Application for ColdFire DEMOJM board",
+            .usb_hint = USB_UNDEFINED
+        },
+        { 
+            .vid = FREESCALE_PID,
+            .pid = 0x0042,
+            .march_description = "OSBDM - Debug Port",
+            .usb_hint = USB_UNDEFINED
+        },        
+        {
+            .vid = FREESCALE_PID,
             .pid = 0x004f,
-            .march_description = "i.MX28 454MHz Arm926EJ-S 16KB/32KB Cache" },
+            .march_description = "i.MX28 454MHz Arm926EJ-S 16KB/32KB Cache",
+            .usb_hint = USB_UNDEFINED
+             },
         { .vid = FREESCALE_PID,
             .pid = 0x0052,
             .march_description = "i.MX50 800MHz Arm Cortex A9" },
@@ -62,9 +97,8 @@ namespace usb {
         { .vid = FREESCALE_PID,
             .pid = 0x004e,
             .march_description = "i.MX53 Arm Cortex A9" },
-        { .vid = FREESCALE_PID,
-            .pid = 0x006a,
-            .march_description = "Vybrid VFXXX SOC" },
+
+
         { .vid = FREESCALE_PID,
             .pid = 0x0054,
             .march_description = IMX_6_STR },
@@ -129,8 +163,6 @@ namespace usb {
             .vid = 0,
             .pid = 0,
             .march_description = "",
-            .vendor = VENDOR_UNKNOWN,
-            .protocols = UKNOWN_PROTOCOL,
         }
     };
 

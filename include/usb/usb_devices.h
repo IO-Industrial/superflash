@@ -24,25 +24,22 @@
 namespace superflash {
 namespace usb {
 
-    enum eVENDORS {
-        VENDOR_UNKNOWN,
-        VENDOR_NXP,
+    enum eUSB_CONTROL_HINT
+    {
+        USB_UNDEFINED,
+        USB_HID,
+        USB_BULK,
     };
 
-    enum ePROTOCOLS {
-        UKNOWN_PROTOCOL = 0,
-        UTP_USB = 0x01,
-        SDP_UART = 0x2,
-        SDP_USB = 0x4,
-    };
-
+    //! \brief Supported USB Device Structure
     struct sf_usb_device {
         uint32_t vid;
         uint32_t pid;
         const char* march_description;
-
-        uint32_t vendor;
-        uint32_t protocols;
+        enum eUSB_CONTROL_HINT usb_hint;
+        uint32_t max_transfer;
+        uint32_t dcd_addr;
+        uint32_t ram_start;
     };
 
     //! \brief Search for this device in our supported device array
