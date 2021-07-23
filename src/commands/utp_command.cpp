@@ -18,7 +18,7 @@
  */
 #include "commands/utp_command.h"
 #include "bytesex.h"
-#include "commands/utp.h"
+#include "protocols/utp.h"
 #include "errors.h"
 #include "file_utilities.h"
 #include <arpa/inet.h>
