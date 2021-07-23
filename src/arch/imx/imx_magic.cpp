@@ -1,7 +1,7 @@
 /**
- *  @file: main.cpp
+ *  @file: imx_magic.cpp
  *
- *  Copyright (C) 2020  Joe Turner <joe@agavemountain.com>
+ *  Copyright (C) 2021  Joe Turner <joe@agavemountain.com>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,10 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "gtest/gtest.h"
+#include "arch/imx/imx_magic.h"
 
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+uint8_t magic[] = { 0x23, 0x45, 0x45, 0x23 };
+
+uint8_t vybrid_can_magic[] = { 0x67, 0x89, 0x89, 0x67 };
+
+uint8_t vybrid_HAB_development[] = { 0x56, 0x78, 0x78, 0x56 };
+uint8_t vybrid_HAD_production[] = { 0x12, 0x34, 0x34, 0x12 };

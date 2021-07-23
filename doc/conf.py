@@ -20,13 +20,13 @@
 # -- Project information -----------------------------------------------------
 
 project = u'superflash'
-copyright = u'2020, Joe Turner'
+copyright = u'2021, Joe Turner'
 author = u'Joe Turner'
 
 # The short X.Y version
 version = u''
 # The full version, including alpha/beta/rc tags
-release = u'0.0.0'
+release = u'0.0.1'
 
 
 # -- General configuration ---------------------------------------------------

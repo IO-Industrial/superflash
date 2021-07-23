@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include <iostream>
+#include <stdio.h>
 
-#include "config/global_config.h"
 #include "config/environment.h"
+#include "config/global_config.h"
 #include "file_utilities.h"
 
 void GlobalConfiguration::load_default_values()
@@ -31,7 +31,7 @@ void GlobalConfiguration::load_default_values()
 
 void GlobalConfiguration::save_ini()
 {
-    if (ini.SaveFile(_config_path.c_str())<0) {
+    if (ini.SaveFile(_config_path.c_str()) < 0) {
         printf("Error, could not save configuration file (%s).", _config_path.c_str());
         return;
     };
@@ -40,32 +40,28 @@ void GlobalConfiguration::save_ini()
 void GlobalConfiguration::load_ini()
 {
     bool ret = false;
-    const char *SUPERFLASH_CONFIG = "SUPERFLASH_CONFIG";
+    const char* SUPERFLASH_CONFIG = "SUPERFLASH_CONFIG";
     std::string home_path = Environment::home_path() + "/.superflash";
     _config_path = home_path + "/config";
 
     // Create $HOME/.superflash if it doesn't exist.
-    if (!doesDirectoryExist(home_path))
-    {
-        #if defined(_WIN32)
-            _mkdir(home_path.c_str());
-        #else 
-            mkdir(home_path.c_str(), 0755); 
-        #endif
-        
+    if (!doesDirectoryExist(home_path)) {
+#if defined(_WIN32)
+        _mkdir(home_path.c_str());
+#else
+        mkdir(home_path.c_str(), 0755);
+#endif
+
         load_default_values();
 
         save_ini();
     }
 
-    // env variable can override the configuration 
-    if (Environment::isExists(SUPERFLASH_CONFIG))
-    {
+    // env variable can override the configuration
+    if (Environment::isExists(SUPERFLASH_CONFIG)) {
         _config_path = Environment::get(SUPERFLASH_CONFIG);
     }
 
     ini.LoadFile(_config_path.c_str());
     std::cout << "config_path = " << _config_path << std::endl;
-
 }
-

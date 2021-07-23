@@ -22,25 +22,17 @@
 
 //! \brief Command interface abstract base class
 //!
-//! This is the base class for commands, which a part of command 
+//! This is the base class for commands, which a part of command
 //! design pattern.
 //!
-class Command
-{
+class Command {
 public:
-
     //! \brief Default virtual destructor
     virtual ~Command() {};
 
     //! \brief Execute a stand alone command
     //!
     virtual int execute() = 0;
-
-    //! \brief Execute Command against transport
-    //!
-    //! \param transport    pointer to transport device class
-    //virtual int execute(TransportDevice *transport) = 0;
 };
-
 
 #endif

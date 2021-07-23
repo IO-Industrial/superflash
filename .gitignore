@@ -13,3 +13,11 @@ build/
 .vscode/
 .DS_Store
 _build/
+CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
+Doxyfile
+third-party/googletest/googletest/generated/
+third-party/yaml-cpp/yaml-cpp-config-version.cmake
+third-party/yaml-cpp/yaml-cpp-config.cmake
+third-party/yaml-cpp/yaml-cpp-targets.cmake
+yaml-cpp.pc

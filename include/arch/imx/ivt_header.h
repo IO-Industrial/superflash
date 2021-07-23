@@ -1,7 +1,5 @@
 /*
- * \file portable.h
- *
- * Macros and functions to aid in portability between platforms
+ * \file ivt_header.h
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,22 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #pragma once
-#include <stdint.h>
 
-#ifdef __GNUC__
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#define BE32(x) __builtin_bswap32(x)
-#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8))
-#define BE16(x) __builtin_bswap16(x)
-#else
-#define BE16(x)                                        \
-    ({                                                 \
-        typeof(x) __x = (x);                           \
-        (((__x << 8) & 0xffff) | ((__x >> 8) & 0xff)); \
-    })
-#endif
-#else
-#define BE32(x) x
-#define BE16(x) x
-#endif
-#endif
+/* Command tags and parameters */
+#define IVT_HEADER_TAG 0xD1
+#define IVT_VERSION 0x40
+#define IVT_VERSION_IMX8M 0x41
+#define DCD_HEADER_TAG 0xD2
+#define DCD_VERSION 0x40
+#define DCD_VERSION_IMX8M 0x41
+
+#pragma pack(1)
+struct ivt_header {
+    uint8_t tag;
+    uint16_t length;
+    uint8_t version;
+};
+#pragma pack()

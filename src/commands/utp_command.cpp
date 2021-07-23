@@ -16,22 +16,22 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "commands/utp.h"
 #include "commands/utp_command.h"
-#include <stdint.h>
-#include <memory>
-#include <arpa/inet.h>
-#include <vector>
-#include <fstream>
-#include<iterator>
-#include <string.h>
-#include <assert.h>
-#include <unistd.h>
-#include "errors.h"
 #include "bytesex.h"
+#include "commands/utp.h"
+#include "errors.h"
 #include "file_utilities.h"
+#include <arpa/inet.h>
+#include <assert.h>
+#include <fstream>
+#include <iterator>
+#include <memory>
+#include <stdint.h>
+#include <string.h>
+#include <unistd.h>
+#include <vector>
 
-int UTPCommand::send(SCSIGenericTransportDevice *dev, void *data, int length)
+int UTPCommand::send(SCSIGenericTransportDevice* dev, void* data, int length)
 {
     assert(dev);
     int rc = dev->send(&m_msg, data, length, m_reply);
@@ -49,36 +49,20 @@ void UTPCommand::reset()
 bool UTPCommand::isReplyGood() const
 {
 
-    // if (m_reply.respose_code != 0x70) {
-    //     printf("invalid response code.\n");
-    // }
-    // if (m_reply.additional_sense_code != 0x80) {
-    //     printf("invalid additional sense code.\n");
-    // }
-    // if (m_reply.sense_key != 0x09)
-    // {
-    //     printf("invalid sense key.\n");
-    // }
+    hexdump((void*)&m_reply, sizeof(m_reply));
 
-    printf("SENSE BUFFER:\n");
-    
-    hexdump((void *)&m_reply, sizeof(m_reply));
-
-    if ( (m_reply.respose_code == 0x70) &&
-         (m_reply.additional_sense_code == 0x80) &&
-         (m_reply.sense_key == 0x09))
-         {
-             return true;
-         }
+    if ((m_reply.respose_code == 0x70) && (m_reply.additional_sense_code == 0x80) && (m_reply.sense_key == 0x09)) {
+        return true;
+    }
 
     // SF_ERROR(SF_ERR_RECV_CORRUPTED_SENSE);
     return false;
 }
 
-int UTPExecCommand::execute(SCSIGenericTransportDevice *transport)
+int UTPExecCommand::execute(SCSIGenericTransportDevice* transport)
 {
     reset();
-    m_msg.operation_code=0xF0;
+    m_msg.operation_code = 0xF0;
     m_msg.UTP_message_type = UTP_EXEC;
     m_msg.UTP_message_parameter_upper32 = 0;
     m_msg.UTP_message_parameter_lower32 = 0;
@@ -88,9 +72,8 @@ int UTPExecCommand::execute(SCSIGenericTransportDevice *transport)
     hexdump(&m_msg, sizeof(m_msg));
     printf("* command: %s\n", _command.c_str());
 
-    int rc = send(transport, (void *)_command.c_str(), _command.length());
-    if ( rc < 0)
-    {
+    int rc = send(transport, (void*)_command.c_str(), _command.length());
+    if (rc < 0) {
         SF_ERROR(SF_ERR_SEND_UTP);
         return rc;
     };
@@ -98,13 +81,12 @@ int UTPExecCommand::execute(SCSIGenericTransportDevice *transport)
     isReplyGood();
 
     return m_replyCode;
-
 }
 
-int UTPExecSendSize::execute(SCSIGenericTransportDevice *transport)
+int UTPExecSendSize::execute(SCSIGenericTransportDevice* transport)
 {
     reset();
-    m_msg.operation_code=0xF0;
+    m_msg.operation_code = 0xF0;
     m_msg.UTP_message_type = UTP_EXEC;
     m_msg.UTP_message_parameter_upper32 = 0;
     m_msg.UTP_message_parameter_lower32 = htonl(file_size);
@@ -113,9 +95,8 @@ int UTPExecSendSize::execute(SCSIGenericTransportDevice *transport)
     printf("Sending EXEC / SIZE CDB:\n");
     hexdump(&m_msg, sizeof(m_msg));
 
-    int rc = send(transport, (void *)_command.c_str(), _command.length());
-    if ( rc < 0)
-    {
+    int rc = send(transport, (void*)_command.c_str(), _command.length());
+    if (rc < 0) {
         SF_ERROR(SF_ERR_SEND_UTP);
         return rc;
     };
@@ -123,13 +104,12 @@ int UTPExecSendSize::execute(SCSIGenericTransportDevice *transport)
     isReplyGood();
 
     return m_replyCode;
-
 }
 
-int UTPPutSend::execute(SCSIGenericTransportDevice *transport)
+int UTPPutSend::execute(SCSIGenericTransportDevice* transport)
 {
     reset();
-    m_msg.operation_code=0xF0;
+    m_msg.operation_code = 0xF0;
     m_msg.UTP_message_type = UTP_PUT;
     m_msg.UTP_message_parameter_upper32 = 0;
     m_msg.UTP_message_parameter_lower32 = 0;
@@ -138,10 +118,9 @@ int UTPPutSend::execute(SCSIGenericTransportDevice *transport)
     printf("Sending PUT CDB:\n");
     hexdump(&m_msg, sizeof(m_msg));
 
-    int rc = send(transport, (void *)data, data_size);
+    int rc = send(transport, (void*)data, data_size);
 
-    if ( rc < 0)
-    {
+    if (rc < 0) {
         SF_ERROR(SF_ERR_SEND_UTP);
         return rc;
     };
@@ -151,10 +130,10 @@ int UTPPutSend::execute(SCSIGenericTransportDevice *transport)
     return m_replyCode;
 }
 
-int UTPPollCommand::execute(SCSIGenericTransportDevice *transport)
+int UTPPollCommand::execute(SCSIGenericTransportDevice* transport)
 {
     reset();
-    m_msg.operation_code=0xF0;
+    m_msg.operation_code = 0xF0;
     m_msg.UTP_message_type = UTP_POLL;
     m_msg.UTP_message_parameter_upper32 = 0;
     m_msg.UTP_message_parameter_lower32 = 0;
@@ -164,8 +143,7 @@ int UTPPollCommand::execute(SCSIGenericTransportDevice *transport)
     hexdump(&m_msg, sizeof(m_msg));
 
     int rc = send(transport, NULL, 0);
-    if ( rc < 0)
-    {
+    if (rc < 0) {
         SF_ERROR(SF_ERR_SEND_UTP);
         return rc;
     };
@@ -175,10 +153,10 @@ int UTPPollCommand::execute(SCSIGenericTransportDevice *transport)
     return m_replyCode;
 }
 
-int UTPVersion::execute(SCSIGenericTransportDevice *transport)
+int UTPVersion::execute(SCSIGenericTransportDevice* transport)
 {
     reset();
-    m_msg.operation_code=0xF0;
+    m_msg.operation_code = 0xF0;
     m_msg.UTP_message_type = UTP_POLL;
     m_msg.UTP_message_parameter_upper32 = 0;
     m_msg.UTP_message_parameter_lower32 = htonl(0x1);
@@ -188,8 +166,7 @@ int UTPVersion::execute(SCSIGenericTransportDevice *transport)
     hexdump(&m_msg, sizeof(m_msg));
 
     int rc = send(transport, NULL, 0);
-    if ( rc < 0)
-    {
+    if (rc < 0) {
         SF_ERROR(SF_ERR_SEND_UTP);
         return rc;
     };
@@ -204,33 +181,30 @@ int UTPVersion::execute(SCSIGenericTransportDevice *transport)
     return m_replyCode;
 }
 
-int utp_wait_for_busy(SCSIGenericTransportDevice *transport)
+int utp_wait_for_busy(SCSIGenericTransportDevice* transport)
 {
-    int result=0;
+    int result = 0;
 
-    for (int i=0; i < UTP_BUSY_CHECK_COUNT; i++)
-    {
+    for (int i = 0; i < UTP_BUSY_CHECK_COUNT; i++) {
         usleep(UTP_BUSY_SLEEP);
         UTPPollCommand poll;
         result = poll.execute(transport);
-        if (result <= 0)
-        {
+        if (result <= 0) {
             break;
         }
 
-        if (i == UTP_BUSY_CHECK_COUNT - 1)
-        {
+        if (i == UTP_BUSY_CHECK_COUNT - 1) {
             SF_ERROR(SF_ERR_DEVICE_BUSY);
             return -1;
         }
-    }    
+    }
 
     return result;
 }
 
-int utp_send_command_with_wait(SCSIGenericTransportDevice *transport, std::string command)
+int utp_send_command_with_wait(SCSIGenericTransportDevice* transport, std::string command)
 {
-    int result=0;
+    int result = 0;
 
     UTPExecCommand exec(command);
     result = exec.execute(transport);
@@ -242,18 +216,17 @@ int utp_send_command_with_wait(SCSIGenericTransportDevice *transport, std::strin
         printf("command returned EXIT.\n");
         return result;
     }
-    
+
     result = utp_wait_for_busy(transport);
     return result;
 }
 
-int utp_send_file(SCSIGenericTransportDevice *transport, std::string command, std::string filename)
+int utp_send_file(SCSIGenericTransportDevice* transport, std::string command, std::string filename)
 {
-    int result=0;
+    int result = 0;
 
     // check that the file exists
-    if (!doesFileExist(filename))
-    {
+    if (!doesFileExist(filename)) {
         SF_ERROR(SF_ERR_FILE_DOES_NOT_EXIST);
         return -1;
     }
@@ -269,8 +242,7 @@ int utp_send_file(SCSIGenericTransportDevice *transport, std::string command, st
     exec.file_size = file_size;
     result = exec.execute(transport);
     printf("result = %d\n", result);
-    if (result == UTP_BUSY)
-    {
+    if (result == UTP_BUSY) {
         result = utp_wait_for_busy(transport);
     }
 
@@ -278,31 +250,28 @@ int utp_send_file(SCSIGenericTransportDevice *transport, std::string command, st
     UTPPutSend put;
 
     int data_written = 0;
-    uint8_t *file_data = data.data();
+    uint8_t* file_data = data.data();
 
-    while (data_written < file_size)
-	{
+    while (data_written < file_size) {
         printf("%d out of %d bytes written to device.\n", data_written, file_size);
 
         UTPPutSend put;
-		int write_size = file_size - data_written > UTP_MAX_DATA_SIZE ? UTP_MAX_DATA_SIZE : file_size - data_written;
+        int write_size = file_size - data_written > UTP_MAX_DATA_SIZE ? UTP_MAX_DATA_SIZE : file_size - data_written;
         printf("Writing %d bytes\n", write_size);
         put.data = file_data + data_written;
         put.data_size = write_size;
         result = put.execute(transport);
         printf("result = %d\n", result);
-		if (result < 0)
-        {
+        if (result < 0) {
             fprintf(stderr, "Send_cmd failed (put_send)\n");
             break;
         }
 
-        if (result == UTP_BUSY)
-        {
+        if (result == UTP_BUSY) {
             result = utp_wait_for_busy(transport);
         }
 
-		data_written += write_size;
-	}
+        data_written += write_size;
+    }
     return result;
 }

@@ -38,7 +38,6 @@ namespace formats {
     class hex_data {
 
     public:
-
         //! \brief Default constructor
         hex_data()
         {
@@ -48,14 +47,14 @@ namespace formats {
         }
 
         //! \brief Copy constructor
-        hex_data(const hex_data &src)
+        hex_data(const hex_data& src)
         {
             _data = src._data;
             _iterator = src._iterator;
         }
 
         //! \brief Assignment operator
-        hex_data operator=(const hex_data &src)
+        hex_data operator=(const hex_data& src)
         {
             // protect against self-assignment
             if (this == &src) {
@@ -96,9 +95,9 @@ namespace formats {
         hex_data& operator++()
         {
             ++_iterator;
-            return(*this);
+            return (*this);
         }
-        
+
         //! \brief Overloaded postfix increment operator
         //!
         //! Overloads the postfix increment operator to move interal iterator to
@@ -107,9 +106,9 @@ namespace formats {
         {
             hex_data tmp(*this);
             ++(*this);
-            return(tmp);
+            return (tmp);
         }
-        
+
         //! \brief Overloaded prefix decrement operator
         //!
         //! Overloads the prefix decrement operator to move interal iterator to
@@ -117,9 +116,9 @@ namespace formats {
         hex_data& operator--()
         {
             --_iterator;
-            return(*this);
+            return (*this);
         }
-        
+
         //! \brief Overloaded postfix decrement operator
         //!
         //! Overloads the postfix decrement operator to move interal iterator to
@@ -128,30 +127,29 @@ namespace formats {
         {
             hex_data tmp(*this);
             --(*this);
-            return(tmp);
+            return (tmp);
         }
-        
+
         //! \brief Moves the address pointer to the first available address.
         //!
-        //! The address pointer will be moved to the first available address in 
+        //! The address pointer will be moved to the first available address in
         //! memory of the decoded file or of the data the user has inserted into
         //! memory for the purpose of encoding into the Intel HEX format.
         //!
         //! \sa end()
-        //! 
+        //!
         //! \note This function has no effect if no file has been as yet decoded
         //! and no data has been inserted into memory.
         void begin()
         {
-            if (_data.size() != 0)
-            {
+            if (_data.size() != 0) {
                 _iterator = _data.begin();
             }
         }
-        
+
         //! \brief Moves the address pointer to the last available address.
         //!
-        //! The address pointer will be moved to the last available address in 
+        //! The address pointer will be moved to the last available address in
         //! memory of the decoded file or of the data the user has inserted into
         //! memory for the purpose of encoding into the Intel HEX format.
         //!
@@ -161,13 +159,12 @@ namespace formats {
         //! and no data has been inserted into memory.
         void end()
         {
-            if (!_data.empty())
-            {
+            if (!_data.empty()) {
                 _iterator = _data.end();
                 --_iterator;
             }
         }
-        
+
         //! \brief Inserts desired byte at the desired address.
         //!
         //! Inserts byte of data at the desired address.
@@ -181,10 +178,11 @@ namespace formats {
         bool insert(uint8_t data, unsigned long address)
         {
             std::pair<
-                std::map<unsigned long, uint8_t>::iterator,bool> ret;
+                std::map<unsigned long, uint8_t>::iterator, bool>
+                ret;
 
             ret = _data.insert(std::pair<unsigned long, uint8_t>(address, data));
-            
+
             return (ret.second);
         }
 
@@ -196,20 +194,16 @@ namespace formats {
         //!
         //! \retval true      - data insertion was successful
         //! \retval false     - data insertion failed
-        bool insert(unsigned long base_address, uint8_t *data, int size)
+        bool insert(unsigned long base_address, uint8_t* data, int size)
         {
             unsigned long addr = base_address;
-            uint8_t *ptr = data;
+            uint8_t* ptr = data;
 
-            for (int i=0;i<size;i++)
-            {
-                if (insert(*ptr, addr))
-                {
+            for (int i = 0; i < size; i++) {
+                if (insert(*ptr, addr)) {
                     addr++;
                     ptr++;
-                }
-                else 
-                {
+                } else {
                     return false;
                 }
             }
@@ -218,19 +212,19 @@ namespace formats {
 
         //! \brief Retrieve value at address pointed to by internal iterator
         //!
-        bool getData(uint8_t *data) {
+        bool getData(uint8_t* data)
+        {
             bool ret = false;
-            if (!_data.empty() && (_iterator != _data.end()))
-            {
+            if (!_data.empty() && (_iterator != _data.end())) {
                 *data = _iterator->second;
                 ret = true;
             }
             return ret;
         }
 
-        //! \brief Returns current address 
+        //! \brief Returns current address
         //!
-        //! This function will return the current address pointed to by 
+        //! This function will return the current address pointed to by
         //! the internal iterator.
         //!
         //! \retval Current address that the internal iterator is pointing to.
@@ -251,14 +245,14 @@ namespace formats {
         //! if there is data available.  If no data is available, no data
         //! will be returned.
         //!
-        //! \param address  pointer to address 
+        //! \param address  pointer to address
         //!
         //! \retval true    - address exists and the returned value is valid
         //! \retval false   - address did not exist and return value is not valid.
-        bool getStartAddress(unsigned long *address) {
+        bool getStartAddress(unsigned long* address)
+        {
             bool ret = false;
-            if (_data.size() != 0)
-            {
+            if (_data.size() != 0) {
                 std::map<unsigned long, uint8_t>::iterator it;
                 it = _data.begin();
                 *address = (*it).first;
@@ -273,14 +267,14 @@ namespace formats {
         //! if there is data available.  If no data is available, no data
         //! will be returned.
         //!
-        //! \param address  pointer to address 
+        //! \param address  pointer to address
         //!
         //! \retval true    - address exists and the returned value is valid
         //! \retval false   - address did not exist and return value is not valid.
-        bool getEndAddress(unsigned long *address) {
+        bool getEndAddress(unsigned long* address)
+        {
             bool ret = false;
-            if (_data.size() != 0)
-            {
+            if (_data.size() != 0) {
                 std::map<unsigned long, uint8_t>::reverse_iterator it;
                 it = _data.rbegin();
                 *address = (*it).first;
@@ -293,9 +287,9 @@ namespace formats {
         //!
         //! Returns the data for the desired address. If the address has no data
         //! assigned to it, the function returns false, the pointer to data is not
-        //! written and the class's address pointer remains unchanged. If the 
-        //! address has data assigned to it, the pointer to data will be written 
-        //! with the data found and the class's address pointer will be moved to 
+        //! written and the class's address pointer remains unchanged. If the
+        //! address has data assigned to it, the pointer to data will be written
+        //! with the data found and the class's address pointer will be moved to
         //! this new location.
         //!
         //! \param data       - variable to hold data requested
@@ -304,17 +298,15 @@ namespace formats {
         //! \retval true      - data was available and returned value is valid
         //! \retval false     - data was not available and returned valid is not
         //!                     valid
-        bool getData(uint8_t *data, const unsigned long address)
+        bool getData(uint8_t* data, const unsigned long address)
         {
             bool found = false;
             std::map<unsigned long, unsigned char>::iterator iterator;
-            if (!_data.empty())
-            {
+            if (!_data.empty()) {
                 iterator = _data.find(address);
-                if (iterator != _data.end())
-                {
+                if (iterator != _data.end()) {
                     found = true;
-                    _iterator = iterator;  // reset iterator to point to this value.
+                    _iterator = iterator; // reset iterator to point to this value.
                     *data = iterator->second;
                 }
             }

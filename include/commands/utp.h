@@ -21,26 +21,26 @@
 #include <stdint.h>
 
 //! The UTP request structure is defined as a 16-byte SCSI CDB
-#define UTP_CDB_SIZE            0x10
+#define UTP_CDB_SIZE 0x10
 
 //! \brief UTP Command Timeout (in milliseconds)
 //!
 //! The device should reply BUSY for operations taking longer
 //! than five (5) seconds.
-#define UTP_COMMAND_TIMEOUT     (5 * 60 * 1000)
+#define UTP_COMMAND_TIMEOUT (5 * 60 * 1000)
 
 //! \brief Maximum data transmit block size.
-#define UTP_MAX_DATA_SIZE       0x10000
+#define UTP_MAX_DATA_SIZE 0x10000
 
 //! \brief Number of times to poll if busy
-#define UTP_BUSY_CHECK_COUNT    500
+#define UTP_BUSY_CHECK_COUNT 500
 
 //! \brief Duration of sleep while polling (50ms)
-#define UTP_BUSY_SLEEP          500000
+#define UTP_BUSY_SLEEP 500000
 
 //! \todo SCSI spec states that all values are stored in big-endian
 //! format.  No translation is currently being done.  Code needs
-//! to be implemented to account for endian-ness of the host and 
+//! to be implemented to account for endian-ness of the host and
 //! properly translate the endian-ness of the values.
 
 #pragma pack(1)
@@ -48,26 +48,25 @@
 //! \brief UTP SCSI CDB (Command Descriptor Block)
 //!
 //! UTP as a SCSI CDB (Command Descriptor Block)
-//! \note per Per SCSI protocol, each field is sent in big-endian order. 
-struct UTP_CDB
-{
+//! \note per Per SCSI protocol, each field is sent in big-endian order.
+struct UTP_CDB {
     //! \brief SCSI CDB Operation Code
-    //! This value is always fixed as 0xF0 
-    uint8_t operation_code;                 //! CDB[0]
-    
+    //! This value is always fixed as 0xF0
+    uint8_t operation_code; //! CDB[0]
+
     //! \brief UTP Message Type
     //!
     //! 0 = Poll
     //! 1 = Exec
     //! 2 = Get
     //! 3 = Put
-    uint8_t UTP_message_type;               //! CDB[1]
+    uint8_t UTP_message_type; //! CDB[1]
 
     //! Each UTP transaction contains a 32-bit tag used to
     //! group messages belonging to the same UTP transaction.
-    //! This is for sanity checking only, as UTP message from 
+    //! This is for sanity checking only, as UTP message from
     //! multiple transactions cannot be interlealved.
-    uint32_t UTP_message_tag;               //! CDB[2:5]
+    uint32_t UTP_message_tag; //! CDB[2:5]
 
     uint32_t UTP_message_parameter_upper32; //! CDB[6:9]
     uint32_t UTP_message_parameter_lower32; //! CDB[10:13]
@@ -76,9 +75,8 @@ struct UTP_CDB
 
 //! \brief UTP Sense Reply Header
 //!
-//! \note per Per SCSI protocol, each field is sent in big-endian order. 
-struct UTP_SCSI_SENSE_REPLY_HEADER
-{
+//! \note per Per SCSI protocol, each field is sent in big-endian order.
+struct UTP_SCSI_SENSE_REPLY_HEADER {
     //! \brief Respnose code
     //! Response code is fixed at 0x70
     uint8_t respose_code;
@@ -97,15 +95,13 @@ struct UTP_SCSI_SENSE_REPLY_HEADER
     uint8_t additional_sense_code;
 
     //! \brief Additional sense qualifier
-    //! 
+    //!
     //! UTP reply code (0=PASS, 1=EXIT, 2=BUSY, 3=SIZE)
     uint8_t UTP_reply_code;
 };
 #pragma pack()
 
-
-enum UTP_MESSAGE_TYPE : unsigned char
-{
+enum UTP_MESSAGE_TYPE : unsigned char {
     //! \brief Poll status
     //!
     //! Used to determine when an asynchronous device command is finished,
@@ -121,7 +117,7 @@ enum UTP_MESSAGE_TYPE : unsigned char
     //!
     //! Transfers the command payload to the host (from the device).
     //! Payloads will be split into multiple 64KB messages.
-    UTP_GET = 2, 
+    UTP_GET = 2,
 
     //! \brief Put
     //!
@@ -137,11 +133,10 @@ enum UTP_MESSAGE_TYPE : unsigned char
 //! simply returns PASS in the CSW.  For extended replies, the CSW returns
 //! FAIL and the complete reply is returned trhough fixed format sense
 //! data.
-enum UTP_REPLY_CODE : unsigned char
-{
+enum UTP_REPLY_CODE : unsigned char {
     //! \brief PASS reply
     //!
-    //! The message completed successfully.  The result is returned in 
+    //! The message completed successfully.  The result is returned in
     //! the CSW (Command Status Wrapper), without a sense message.
     UTP_PASS = 0,
 

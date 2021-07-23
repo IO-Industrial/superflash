@@ -34,7 +34,7 @@
 //! \code{.cpp}
 //! SCSIGenericTransport *pdev = new SCSIGenericTransport("/dev/sg0");
 //! if (pdev->Open() < 0) {
-//!     printf("Error opening transport.\n");    
+//!     printf("Error opening transport.\n");
 //! }
 //! else
 //! {
@@ -47,30 +47,28 @@
 //!     }
 //! }
 //!  \endcode
-class UTPCommand : public Command 
-{
+class UTPCommand : public Command {
 
 public:
-
     //! \brief Default constructor
-    UTPCommand() {}
+    UTPCommand() { }
 
     //! \brief specialized constructor
     //!
     //! \param device_name  path of SCSI device
     //! \param cmd          UTP command text string
     //! \param file_name    path and name of the file to be sent to device
-    UTPCommand(const std::string &cmd, const std::string &file_name);
- 
+    UTPCommand(const std::string& cmd, const std::string& file_name);
+
     //! \brief Execute a stand alone command
     //!
-    //! \returns    
+    //! \returns
     virtual int execute() { return 0; };
 
     //! \brief Execute Command against transport
     //!
     //! \param transport    pointer to transport device class
-    virtual int execute(SCSIGenericTransportDevice *dev) { return 0; };
+    virtual int execute(SCSIGenericTransportDevice* dev) { return 0; };
 
     int getReplyCode() const { return (m_replyCode); }
     bool isBusy() const { return (m_replyCode == UTP_BUSY); }
@@ -81,12 +79,10 @@ public:
     void reset();
 
 protected:
-
-    int send(SCSIGenericTransportDevice *dev, void *data, int length);
+    int send(SCSIGenericTransportDevice* dev, void* data, int length);
     struct UTP_CDB m_msg;
     struct UTP_SCSI_SENSE_REPLY_HEADER m_reply;
     uint8_t m_replyCode;
-
 };
 
 //! \brief UTP exec command
@@ -97,7 +93,7 @@ protected:
 //! Commands prefixed with a dollar sign ($) are shell commands.
 //!
 //! "?"
-//! "!<type>" 
+//! "!<type>"
 //! "$ <shell command>"
 //!
 //! "pipeaddr addr=0x81000000"
@@ -107,19 +103,21 @@ protected:
 //! \returns
 //! This function returns true if the transaction succeeded; else this
 //! function will return false if an error occured.
-class UTPExecCommand : public UTPCommand
-{
+class UTPExecCommand : public UTPCommand {
 public:
     //! \brief specialized constructor
     //!
     //! \param cmd          UTP command text string
-    UTPExecCommand(const std::string &cmd) : _command(cmd) {}
+    UTPExecCommand(const std::string& cmd)
+        : _command(cmd)
+    {
+    }
 
     //! \brief Execute UTP command
     //!
     //! \returns
-    //! This function may return UTP_EXIT, UTP_BUSY or UTP_PASS 
-    virtual int execute(SCSIGenericTransportDevice *transport);
+    //! This function may return UTP_EXIT, UTP_BUSY or UTP_PASS
+    virtual int execute(SCSIGenericTransportDevice* transport);
 
     //! \brief UTP command
     //!
@@ -129,7 +127,7 @@ public:
     //! Commands prefixed with a dollar sign ($) are shell commands.
     //!
     //! "?"
-    //! "!<type>" 
+    //! "!<type>"
     //! "$ <shell command>"
     //!
     //! "pipeaddr addr=0x81000000"
@@ -143,18 +141,18 @@ public:
 //! \returns
 //! This function returns true if the transaction succeeded; else this
 //! function will return false if an error occured.
-class UTPExecSendSize : public UTPCommand
-{
+class UTPExecSendSize : public UTPCommand {
 public:
     //! \brief specialized constructor
     //!
     //! \param cmd          UTP command text string
-    UTPExecSendSize(const std::string &cmd) : _command(cmd) {};
+    UTPExecSendSize(const std::string& cmd)
+        : _command(cmd) {};
 
     //! \brief Execute UTP command
     //!
-    //! \returns    
-    virtual int execute(SCSIGenericTransportDevice *transport);
+    //! \returns
+    virtual int execute(SCSIGenericTransportDevice* transport);
 
     uint32_t file_size;
     std::string _command;
@@ -167,18 +165,16 @@ public:
 //! \returns
 //! This function returns true if the transaction succeeded; else this
 //! function will return false if an error occured.
-class UTPPutSend : public UTPCommand
-{
+class UTPPutSend : public UTPCommand {
 public:
-
     //! \brief Execute UTP command
     //!
     //! \returns
     //! This function may return UTP_EXIT, UTP_BUSY or UTP_PASS
-    virtual int execute(SCSIGenericTransportDevice *transport);
+    virtual int execute(SCSIGenericTransportDevice* transport);
 
-    void *data;
-    int   data_size;
+    void* data;
+    int data_size;
 };
 
 //! \brief UTP POLL command
@@ -186,43 +182,39 @@ public:
 //! A Poll command is used to determine when an asynchronous device
 //! command is finished.  It is also used to query the UTP version.
 //!
-class UTPPollCommand : public UTPCommand
-{
+class UTPPollCommand : public UTPCommand {
 public:
     //! \brief Execute UTP command
     //!
     //! This function will format the CDB to query the status of
-    //! UTP state machine on the target device. 
+    //! UTP state machine on the target device.
     //!
     //! \param  transport   pointer to transport device class
     //!
     //! \returns
     //! This function may return UTP_EXIT, UTP_BUSY or UTP_PASS
-    virtual int execute(SCSIGenericTransportDevice *transport);
-
+    virtual int execute(SCSIGenericTransportDevice* transport);
 };
 
 //! \brief UTP command to query UTP version on target device
-class UTPVersion : public UTPCommand
-{
+class UTPVersion : public UTPCommand {
 public:
     //! \brief Execute UTP poll command to query version.
     //!
     //! This function will format the CDB to query the UTP version
-    //! from the target device. 
+    //! from the target device.
     //!
     //! \param  transport   pointer to transport device class
     //!
     //! \returns
-    //! 
+    //!
     //! Per documentation, this should only return UTP_EXIT.
-    virtual int execute(SCSIGenericTransportDevice *transport);
+    virtual int execute(SCSIGenericTransportDevice* transport);
 
     //! \brief UTP version on target device
     uint32_t m_version;
 };
 
-
-int utp_send_command_with_wait(SCSIGenericTransportDevice *transport, std::string command);
-int utp_send_file(SCSIGenericTransportDevice *transport, std::string command, std::string filename);
-#endif 
+int utp_send_command_with_wait(SCSIGenericTransportDevice* transport, std::string command);
+int utp_send_file(SCSIGenericTransportDevice* transport, std::string command, std::string filename);
+#endif

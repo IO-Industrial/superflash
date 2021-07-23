@@ -19,12 +19,12 @@
  */
 #pragma once
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
 
 #include "errors.h"
-#include "usb/usb_defs.h"
 #include "usb/usb_context.h"
+#include "usb/usb_defs.h"
 #include "usb/usb_device.h"
 #include "usb/usb_enumerator.h"
 #include <memory>
@@ -65,8 +65,7 @@ namespace usb {
         //! This function must be called before calling any other libusb function.
         int initialize()
         {
-            if (_usbctx.getContext() != NULL)
-            {
+            if (_usbctx.getContext() != NULL) {
                 spdlog::warn("libusb context already initialized.");
                 return 0;
             }
@@ -117,7 +116,6 @@ namespace usb {
 
         libusb_device** _devices;
         int _device_count;
-        //libusb_context* _usbcontext = NULL;
 
         std::shared_ptr<USBDevice> _usb_device;
         USBContext _usbctx;

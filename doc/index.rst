@@ -7,6 +7,8 @@ Welcome to superflash's documentation!
 
    intro
    nxp
+   superflash
+   utilities
 
 Indices and tables
 ==================

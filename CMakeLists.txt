@@ -24,6 +24,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+
 # Build documentation option
 # 
 # This option will build the html documentation and doxygen
@@ -110,6 +111,7 @@ SET(COMMON_SRC
     src/bytesex.cpp
     src/config/environment.cpp
     src/config/global_config.cpp
+    src/arch/imx/imx_magic.cpp
 )
 
 link_directories(${LIBUSB_LIBRARY_DIRS} )

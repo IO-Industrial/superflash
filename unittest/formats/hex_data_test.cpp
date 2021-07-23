@@ -16,53 +16,57 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+#include "formats/hex_data.h"
 #include "gtest/gtest.h"
 #include <stdio.h>
-#include "formats/hex_data.h"
 
 using namespace superflash::formats;
 
-TEST(HexData, default_ctor_no_data) {
-   hex_data hex;
-   ASSERT_TRUE(hex.empty());
-   ASSERT_EQ(hex.size(), 0);
+TEST(HexData, default_ctor_no_data)
+{
+    hex_data hex;
+    ASSERT_TRUE(hex.empty());
+    ASSERT_EQ(hex.size(), 0);
 }
 
-TEST(HexData, assign_no_data) {
-   hex_data hex;
-   ASSERT_TRUE(hex.empty());
-   ASSERT_EQ(hex.size(), 0);
+TEST(HexData, assign_no_data)
+{
+    hex_data hex;
+    ASSERT_TRUE(hex.empty());
+    ASSERT_EQ(hex.size(), 0);
 
-   hex_data hex2 = hex;
-   ASSERT_TRUE(hex2.empty());
-   ASSERT_EQ(hex2.size(), 0);
+    hex_data hex2 = hex;
+    ASSERT_TRUE(hex2.empty());
+    ASSERT_EQ(hex2.size(), 0);
 }
 
-TEST(HexData, insert) {
-   hex_data hex;
-   ASSERT_TRUE(hex.empty());
-   ASSERT_EQ(hex.size(), 0);
+TEST(HexData, insert)
+{
+    hex_data hex;
+    ASSERT_TRUE(hex.empty());
+    ASSERT_EQ(hex.size(), 0);
 
-   ASSERT_TRUE(hex.insert(0xa, 0x1234));
+    ASSERT_TRUE(hex.insert(0xa, 0x1234));
 
-   ASSERT_TRUE(!hex.empty());
-   ASSERT_EQ(hex.size(), 1);
+    ASSERT_TRUE(!hex.empty());
+    ASSERT_EQ(hex.size(), 1);
 
-   // inserting second time should fail.
-   ASSERT_FALSE(hex.insert(0xa, 0x1234));
+    // inserting second time should fail.
+    ASSERT_FALSE(hex.insert(0xa, 0x1234));
 }
 
-TEST(HexData, get_data) {
-   hex_data hex;
-   uint8_t dataval;
+TEST(HexData, get_data)
+{
+    hex_data hex;
+    uint8_t dataval;
 
-   ASSERT_TRUE(hex.empty());
-   ASSERT_EQ(hex.size(), 0);
+    ASSERT_TRUE(hex.empty());
+    ASSERT_EQ(hex.size(), 0);
 
-   ASSERT_TRUE(hex.insert(0xa, 0x1234));
+    ASSERT_TRUE(hex.insert(0xa, 0x1234));
 
-   ASSERT_TRUE(!hex.empty());
-   ASSERT_EQ(hex.size(), 1);
+    ASSERT_TRUE(!hex.empty());
+    ASSERT_EQ(hex.size(), 1);
 
     ASSERT_TRUE(hex.getData(&dataval, 0x1234));
     ASSERT_EQ(dataval, 0xa);
@@ -71,25 +75,25 @@ TEST(HexData, get_data) {
     ASSERT_FALSE(hex.getData(&dataval, 0x4321));
 }
 
-TEST(HexData, get_address) {
-   hex_data hex;
-   uint8_t dataval;
+TEST(HexData, get_address)
+{
+    hex_data hex;
+    uint8_t dataval;
     unsigned long addr;
 
-   ASSERT_TRUE(hex.empty());
-   ASSERT_EQ(hex.size(), 0);
+    ASSERT_TRUE(hex.empty());
+    ASSERT_EQ(hex.size(), 0);
 
     // should return false if empty.
-   ASSERT_FALSE(hex.getStartAddress(&addr));
-   ASSERT_FALSE(hex.getEndAddress(&addr));
+    ASSERT_FALSE(hex.getStartAddress(&addr));
+    ASSERT_FALSE(hex.getEndAddress(&addr));
 
-   ASSERT_TRUE(hex.insert(0xa, 0x1234));
-   ASSERT_TRUE(hex.insert(0xb, 0x1235));
+    ASSERT_TRUE(hex.insert(0xa, 0x1234));
+    ASSERT_TRUE(hex.insert(0xb, 0x1235));
 
-   ASSERT_TRUE(hex.getStartAddress(&addr));
-   ASSERT_EQ(addr, 0x1234);
+    ASSERT_TRUE(hex.getStartAddress(&addr));
+    ASSERT_EQ(addr, 0x1234);
 
-   ASSERT_TRUE(hex.getEndAddress(&addr));
-   ASSERT_EQ(addr, 0x1235);
+    ASSERT_TRUE(hex.getEndAddress(&addr));
+    ASSERT_EQ(addr, 0x1235);
 }
-
