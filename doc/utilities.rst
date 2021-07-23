@@ -2,7 +2,7 @@ Command Line Utilities
 ======================
 
 Using UTP Utility
-^^^^^^^^^^^^^^^^^
+-----------------
 
 Superflash provides a stand-alone utility, "utp," that will send UTP messages to
 your hardware device.  This requires that your device be booted into the 
