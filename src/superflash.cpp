@@ -28,6 +28,9 @@
 #include "usb/usb_bus.h"
 #include "usb/usb_device.h"
 #include "usb/usb_devices.h"
+#include "protocols/sdp.h"
+#include "portable.h"
+#include "arch/imx/imx_hab.h"
 
 using namespace std;
 using namespace superflash::usb;
@@ -117,10 +120,105 @@ int scan_usb(int argc, char **argv)
     return 0;
 }
 
+static int do_command(USBDevice &dev, unsigned char *cmd, int cmd_size, int retry)
+{
+	int last, err = -4;
+
+	SPDLOG_TRACE("sending command cmd={:02x} {:02x} {:02x} {:02x}", cmd[0], cmd[1],cmd[2],cmd[3]);
+	while (retry) {
+		err = dev.transfer_hid(1, (unsigned char *)cmd,
+				cmd_size, 
+                &last,
+                0, 
+                1024
+                );
+		if (err)
+			spdlog::error("{} err={}, last_trans={}", __func__, err, last);
+		if (!err)
+			return 0;
+
+		retry--;
+	}
+
+	return err;
+}
+
+static int do_response(USBDevice &dev, int report, unsigned int *result)
+{
+	unsigned char tmp[64] =  { 0 };
+	int last_trans, err;
+
+	err = dev.transfer_hid(report, tmp, sizeof(tmp), &last_trans, 0, 1024);
+	SPDLOG_TRACE("report () in err={}, last_trans={}  {:02x} {:02x} {:02x} {:02x}",
+			report, err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
+
+	/* At least 4 bytes required for a valid result */
+	if (last_trans < 4)
+		return -1;
+
+	/*
+	 * Most results are symetric, but likely are meant to be big endian
+	 * as everything else is...
+	 */
+	*result = BE32(*((unsigned int*)tmp));
+
+	return err;
+}
+
+
 // superflash info
 int info(int argc, char **argv)
 {
     SPDLOG_TRACE("info.");
+
+    spdlog::info("Scan USB bus for devices.");
+    USB usb;
+    usb.initialize();
+    int retries = 1;
+    unsigned int hab_security;
+    struct sdp_command cmd;
+
+    while (retries > 0 || g_wait) {
+        std::vector<USBDevice> list = usb.get_device_list();
+        for (int i = 0; i < list.size(); i++) {
+            USBDevice dev = list[i];
+            struct sf_usb_device* tmp = usb_is_valid_device(dev);
+            if (tmp != NULL) {
+                spdlog::info("FOUND: {:04x}:{:04x} {}", tmp->vid, tmp->pid, tmp->march_description);
+                spdlog::info("  Max USB transfer size : {}", tmp->max_transfer);
+                spdlog::info("  DCD Address           : 0x{:x}", tmp->dcd_addr);
+                spdlog::info("  RAM start address     : 0x{:x}", tmp->ram_start);
+                if (!dev.open_device())
+                {
+                    spdlog::error("Could not open device vid={:04x} pid={:04x}", tmp->vid, tmp->pid);
+                    return 1;
+                };
+                
+                cmd.fill_status();
+                int err = do_command(dev, (uint8_t *)&cmd, sizeof(cmd), 5);
+                err = do_response(dev, 3, &hab_security);
+
+	            spdlog::info("HAB security state: {} (0x{:08x})", hab_security == HAB_ENABLED ?
+			        "production mode" : "development mode", hab_security);
+
+                //SPDLOG_TRACE("sending command cmd={:02x} {:02x} {:02x} {:02x}\n", cmd[0], cmd[1],cmd[2],cmd[3]);
+                dev.close_device();
+                usb.deinitialize();
+                return 0;
+            }
+        }
+        retries--;
+        usleep(25000);
+    }
+
+    spdlog::info("Found 0 supported devices.\n");
+    usb.deinitialize();
+    return 0;
+}
+
+int load_uboot_only(char *filename)
+{
+    SPDLOG_TRACE("Load u-boot file {} and execute u-boot.", filename);
     return 0;
 }
 
@@ -129,7 +227,23 @@ int info(int argc, char **argv)
 // Load a file into 
 int load(int argc, char **argv)
 {
-    SPDLOG_TRACE("load");
+    SPDLOG_TRACE("CMD: load [load file (and execute)] argc={}.", argc);
+    if (argc == 2)
+    {
+        // future: lookup options from configuration files in ~/.superflash
+        spdlog::error("autoloading not supported yet.");
+        return 1;
+    }
+
+    // if only one argument is supplied it must be a file
+    // ex: superflash load u-boot.imx.  We are going to pull the 
+    // address from the u-boot image.
+    if (argc == 3)
+    {
+        return load_uboot_only(argv[2]);
+    }
+
+
     return 0;
 }
 
