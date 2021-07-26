@@ -1,7 +1,7 @@
 /**
  *  @file: sdp.h
  *
- *  Copyright (C) 2020  Joe Turner <joe@agavemountain.com>
+ *  Copyright (C) 2021  Joe Turner <joe@agavemountain.com>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,12 +20,14 @@
 #include <stdint.h>
 #include "portable.h"
 
-#define SDP_READ_REG 0x0101
-#define SDP_WRITE_REG 0x0202
-#define SDP_WRITE_FILE 0x0404
-#define SDP_ERROR_STATUS 0x0505
-#define SDP_WRITE_DCD 0x0a0a
-#define SDP_JUMP_ADDRESS 0x0b0b
+enum : uint16_t {
+	SDP_READ_REG = 0x0101,
+	SDP_WRITE_REG = 0x0202,
+	SDP_WRITE_FILE = 0x0404,
+	SDP_ERROR_STATUS = 0x0505,
+	SDP_WRITE_DCD = 0x0a0a,
+	SDP_JUMP_ADDRESS = 0x0b0b,
+};
 
 #pragma pack(1)
 
