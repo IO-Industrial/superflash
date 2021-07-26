@@ -38,11 +38,6 @@ public:
     //! \returns
     virtual int execute() { return 0; };
 
-    //! \brief Execute Command against transport
-    //!
-    //! \param transport    pointer to transport device class
-    //virtual int execute(TransportDevice *transport) = 0;
-
 protected:
     struct sdp_command m_msg;
 };

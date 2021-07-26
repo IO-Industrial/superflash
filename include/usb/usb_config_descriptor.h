@@ -25,7 +25,10 @@ namespace usb {
 
     //! \brief USBConfigDescriptor object
     //!
-    //! This destructor takes care of freeing the configuration descriptor
+    //! This class wraps a USB config descriptor.
+    //!
+    //! \note The destructor takes care of freeing the configuration 
+    //! descriptor.
     class USBConfigDescriptor {
     public:
         struct libusb_config_descriptor* config;

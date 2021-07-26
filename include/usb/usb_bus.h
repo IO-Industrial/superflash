@@ -43,7 +43,7 @@ namespace superflash {
  * \brief usb namespace
  * 
  * This namespace contains code to discover, enumerate, and communicate with 
- * USB devices.
+ * USB devices.  
  * 
  * \ingroup usb
  */
@@ -62,7 +62,9 @@ namespace usb {
         }
 
         //! \brief Initialize libusb.
-        //! This function must be called before calling any other libusb function.
+        //!
+        //! Initialize libusb and context.  This function must be called before 
+        //! calling any other libusb function.
         int initialize()
         {
             if (_usbctx.getContext() != NULL) {
@@ -81,12 +83,23 @@ namespace usb {
             return rc;
         }
 
-        //! \brief
+        //! \brief Deinitialize USB library
+        //!
+        //! Deinitialise libusb. Must be called at the end of the 
+        //! application. Other libusb routines may not be called 
+        //! after this.
         void deinitialize()
         {
             libusb_exit(NULL);
         }
 
+        //! \brief Get list of USB devices
+        //!
+        //! This function will return a list of devices that were
+        //! found on the USB bus.
+        //!
+        //! \returns
+        //! This function returns a vector of USBDevice objects.
         std::vector<USBDevice> get_device_list()
         {
             _device_list.clear();
@@ -94,6 +107,19 @@ namespace usb {
             return _device_list;
         }
 
+        //! \brief Search for a specific USB device by VID and PID
+        //!
+        //! This function will enumerate the USB bus and search to see
+        //! if a device matching the supplied vendor id and product id 
+        //! are on the bus.
+        //!
+        //! \param vendor_id
+        //! \param product_id
+        //!
+        //! \returns
+        //! \retval true    a device has been found that matches
+        //! \retval false   a device has not been found.
+        //!
         bool search_by_vid_pid(uint16_t vendor_id, uint16_t product_id)
         {
             std::vector<USBDevice> list = get_device_list();

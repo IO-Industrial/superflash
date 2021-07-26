@@ -30,6 +30,8 @@ namespace usb {
 
 #define EP_IN	0x80
 
+    //! \brief USB Device Object
+    //!
     class USBDevice {
 
     public:
