@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #ifndef __SG_TRANSPORT_H_
-#include "commands/utp.h"
+#include "protocols/utp.h"
 #include "transport/transport.h"
 
 //! \brief SCSI Generic I/O transport

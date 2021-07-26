@@ -1,11 +1,6 @@
 Introduction
 ============
 
-Superflash is ultimately envisioned as a set standard of 
-utilities to program/flash embedded System On Chip (SOCs),
-embedded development boards, AVRs, MCUs, flash, EEPROMs
-and more.
-
 Each semiconductor manufacturer supplies tools for
 flashing/programming their parts.  As a result, professionally
 developing for multiple MCUs, MPUs, and SOCs requires multiple 
@@ -28,6 +23,11 @@ Enough already.
 
 Envisioned Use Cases
 --------------------
+
+Superflash is ultimately envisioned as a set standard of 
+utilities to program/flash embedded System On Chip (SOCs),
+embedded development boards, AVRs, MCUs, flash, EEPROMs
+and more.
 
 Ultimately, this project is envisioned to be used in the following
 scenarios:

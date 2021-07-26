@@ -30,6 +30,8 @@ namespace usb {
 
 #define EP_IN	0x80
 
+    //! \brief USB Device Object
+    //!
     class USBDevice {
 
     public:
@@ -171,8 +173,13 @@ namespace usb {
         //! \brief Close the USB device
         void close_device()
         {
-            libusb_release_interface(_handle, 0);
-            libusb_close(_handle);
+            if (_handle)
+            {
+                libusb_release_interface(_handle, 0);
+                libusb_close(_handle);
+                _handle = NULL;
+            }
+            SPDLOG_TRACE("closed USB device.");
         }
 
         //! \brief Initiate bulk transfer

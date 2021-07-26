@@ -46,7 +46,7 @@ namespace usb {
 
         { .vid = FREESCALE_PID,
             .pid = 0x006a,
-            .march_description = "Vybrid VFXXX SoC",
+            .march_description = "Vybrid VFxxx SoC",
             .usb_hint = USB_HID,
             .max_transfer = 1024,
             .dcd_addr = 0x3f400000,

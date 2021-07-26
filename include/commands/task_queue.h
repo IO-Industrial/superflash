@@ -1,5 +1,5 @@
 /**
- *  @file: sdp_command.cpp
+ *  @file: task_queue.h
  *
  *  Copyright (C) 2020  Joe Turner <joe@agavemountain.com>
  *
@@ -16,5 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#include "commands/sdp_command.h"
-#include "protocols/sdp.h"
+#pragma once
+#include <vector>
+
+class TaskQueue
+{
+
+private:
+    std::vector _commands;
+};
