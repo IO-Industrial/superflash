@@ -107,43 +107,12 @@ namespace usb {
             return _device_list;
         }
 
-        //! \brief Search for a specific USB device by VID and PID
-        //!
-        //! This function will enumerate the USB bus and search to see
-        //! if a device matching the supplied vendor id and product id 
-        //! are on the bus.
-        //!
-        //! \param vendor_id
-        //! \param product_id
-        //!
-        //! \returns
-        //! \retval true    a device has been found that matches
-        //! \retval false   a device has not been found.
-        //!
-        bool search_by_vid_pid(uint16_t vendor_id, uint16_t product_id)
-        {
-            std::vector<USBDevice> list = get_device_list();
-            for (int i = 0; i < list.size(); i++) {
-                if (list[i].is_VID_PID(vendor_id, product_id)) {
-                    list[i].dump();
-                    return true;
-                }
-            }
-            return false;
-        }
-
     private:
         USB(const USB&) = delete; // non construction-copyable
         USB& operator=(const USB&) = delete; // non copyable
 
         std::vector<USBDevice> _device_list;
 
-        struct libusb_device* device = NULL;
-
-        libusb_device** _devices;
-        int _device_count;
-
-        std::shared_ptr<USBDevice> _usb_device;
         USBContext _usbctx;
     };
 

@@ -133,7 +133,7 @@ static int do_command(USBDevice &dev, unsigned char *cmd, int cmd_size, int retr
                 1024
                 );
 		if (err)
-			spdlog::error("{} err={}, last_trans={}", __func__, err, last);
+			spdlog::error("{} err={}, last_trans={}", __func__, libusb_error_name(err), last);
 		if (!err)
 			return 0;
 
@@ -149,7 +149,7 @@ static int do_response(USBDevice &dev, int report, unsigned int *result)
 	int last_trans, err;
 
 	err = dev.transfer_hid(report, tmp, sizeof(tmp), &last_trans, 0, 1024);
-	SPDLOG_TRACE("report () in err={}, last_trans={}  {:02x} {:02x} {:02x} {:02x}",
+	SPDLOG_TRACE("report ({}) in err={}, last_trans={}  {:02x} {:02x} {:02x} {:02x}",
 			report, err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
 
 	/* At least 4 bytes required for a valid result */

@@ -1,5 +1,7 @@
 /*
- * \file transport_type.h
+ * \file usb_endpoint.h
+ *
+ * USB device class
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,20 +17,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#ifndef _TRANSPORT_TYPE_H_
-#define _TRANSPORT_TYPE_H_
+#pragma once
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
 
-//! \brief Transport Type
-//!
-//! This enumeration contains the transport type, which gives us a
-//! hint as to how to program the device (USB, serial, can, ethernet, etc.)
-enum TRANS_TYPE
+namespace superflash
 {
+    namespace usb
+    {
 
-    TRANS_UNKNOWN,      //!< unknown transfer type
-    TRANS_SCSI_GENERIC, //!< SCSI generic
-    TRANS_USB_HID,      //!< USB Human Interface Device (HID)
-    TRANS_USB_BULK      //!< USB Bulk transfer
-};
+        class USBEndpoint
+        {
+        public:
+            USBEndpoint();
+            constexpr USBEndpoint(int a, int size) : addr{a}, packet_size{size} {}
+            int addr = 0;
+            int packet_size = 64;
+        };
 
-#endif
+    } // usb
+} // superflash

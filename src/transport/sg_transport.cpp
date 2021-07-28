@@ -25,6 +25,9 @@
 #include <scsi/sg_io_linux.h>
 #include <scsi/sg_lib.h>
 #endif
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
 
 int SCSIGenericTransportDevice::send(struct UTP_CDB* message, void* dxferp, int dxferp_len, struct UTP_SCSI_SENSE_REPLY_HEADER& reply)
 {
@@ -44,12 +47,12 @@ int SCSIGenericTransportDevice::send(struct UTP_CDB* message, void* dxferp, int 
 
     ret = ioctl(_device_fd, SG_IO, &sgio_hdr);
     if (ret < 0) {
-        fprintf(stderr, "SG_IO ioctl error\n");
+        spdlog::error("SG_IO ioctl error");
         Close();
     }
 #else
     // MAC doesn't support generic scsi operations without writing kernel code.
-    fprintf(stderr, "Operation not supported under this operating system.\n");
+    spdlog::error("Operation not supported under this operating system.");
 #endif
     return ret;
 }
@@ -78,12 +81,12 @@ int SCSIGenericTransportDevice::send_sg(uint8_t* header, int headerlen, void* dx
     // Call IOCTL
     ret = ioctl(_device_fd, SG_IO, &sgio_hdr);
     if (ret < 0) {
-        fprintf(stderr, "SG_IO ioctl error\n");
+        spdlog::error("SG_IO ioctl error");
         Close();
     }
 #else
     // MAC doesn't support generic scsi operations without writing kernel code.
-    fprintf(stderr, "Operation not supported under this operating system.\n");
+    spdlog::error("Operation not supported under this operating system.\n");
 #endif
     return ret;
 }

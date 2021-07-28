@@ -19,6 +19,9 @@
 #include <fcntl.h>
 #include <iostream>
 #include <unistd.h>
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+#include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
 
 int TransportDevice::Open()
 {
@@ -30,7 +33,7 @@ int TransportDevice::Open()
     // Open device
     _device_fd = open(_device_filename.c_str(), O_RDONLY);
     if (_device_fd < 0) {
-        std::cerr << "Error opening device: " << _device_filename << "\n";
+        spdlog::error("Error opening device: {}",_device_filename);
     }
     return _device_fd;
 }

@@ -20,42 +20,44 @@
 #include "usb/usb_devices.h"
 #include <cstddef>
 
-namespace {
-const uint32_t FREESCALE_PID = 0x15A2;
-const uint32_t SIGMATEL_PID = 0x066F;
-const uint32_t NXP_PID = 0x1fc9;
-const uint32_t BOUNDARY_DEVICES_PID = 0x3016;
-const uint32_t NETCHIP_TECH_PID = 0x0525;
+namespace
+{
+    const uint32_t FREESCALE_PID = 0x15A2;
+    const uint32_t SIGMATEL_PID = 0x066F;
+    const uint32_t NXP_PID = 0x1fc9;
+    const uint32_t BOUNDARY_DEVICES_PID = 0x3016;
+    const uint32_t NETCHIP_TECH_PID = 0x0525;
 
-const char* IMX_6_STR = "imx.6";
+    const char *IMX_6_STR = "imx.6";
 }
 
-namespace superflash {
-namespace usb {
+namespace superflash
+{
+    namespace usb
+    {
 
-    // 15a2   Freescale Semiconductor, Inc.
-    // 	0038  9S08JS Bootloader
-    // 	003b  USB2CAN Application for ColdFire DEMOJM board
-    // 	0042  OSBDM - Debug Port
-    // 	004f  i.MX28 SystemOnChip in RecoveryMode
-    // 	0052  i.MX50 SystemOnChip in RecoveryMode
-    // 	0054  i.MX 6Dual/6Quad SystemOnChip in RecoveryMode
-    // 	0061  i.MX 6Solo/6DualLite SystemOnChip in RecoveryMode
+        // 15a2   Freescale Semiconductor, Inc.
+        // 	0038  9S08JS Bootloader
+        // 	003b  USB2CAN Application for ColdFire DEMOJM board
+        // 	0042  OSBDM - Debug Port
+        // 	004f  i.MX28 SystemOnChip in RecoveryMode
+        // 	0052  i.MX50 SystemOnChip in RecoveryMode
+        // 	0054  i.MX 6Dual/6Quad SystemOnChip in RecoveryMode
+        // 	0061  i.MX 6Solo/6DualLite SystemOnChip in RecoveryMode
 
-    struct sf_usb_device sf_usb_devices[] = {
+        struct sf_usb_device sf_usb_devices[] = {
 
-        { .vid = FREESCALE_PID,
-            .pid = 0x006a,
-            .march_description = "Vybrid VFxxx SoC",
-            .usb_hint = USB_HID,
-            .max_transfer = 1024,
-            .dcd_addr = 0x3f400000,
-            .ram_start = 0x10000000
-        },
+            {.vid = FREESCALE_PID,
+             .pid = 0x006a,
+             .march_description = "Vybrid VFxxx SoC",
+             .usb_hint = USB_HID,
+             .max_transfer = 1024,
+             .dcd_addr = 0x3f400000,
+             .ram_start = 0x10000000},
 
         ///////////////////////////////////////////////////////////////////
-        // untested below 
-
+        // untested below
+#if 0
         // Sigmatel
         {
             .vid = SIGMATEL_PID,
@@ -158,39 +160,43 @@ namespace usb {
         { .vid = NXP_PID,
             .pid = 0x0126,
             .march_description = "iMX7" },
-        // Sentinel
+#endif
+            // Sentinel
+            {
+                .vid = 0,
+                .pid = 0,
+                .march_description = "",
+            }};
+
+        struct sf_usb_device *find(uint32_t vid, uint32_t pid)
         {
-            .vid = 0,
-            .pid = 0,
-            .march_description = "",
-        }
-    };
+            struct sf_usb_device *ptr = NULL;
 
-    struct sf_usb_device* find(uint32_t vid, uint32_t pid)
-    {
-        struct sf_usb_device* ptr = NULL;
-
-        for (int i = 0; (sf_usb_devices[i].vid > 0); i++) {
-            if ((vid == sf_usb_devices[i].vid) && (pid == sf_usb_devices[i].pid)) {
-                return &sf_usb_devices[i];
+            for (int i = 0; (sf_usb_devices[i].vid > 0); i++)
+            {
+                if ((vid == sf_usb_devices[i].vid) && (pid == sf_usb_devices[i].pid))
+                {
+                    return &sf_usb_devices[i];
+                }
             }
+
+            return ptr;
         }
 
-        return ptr;
-    }
+        struct sf_usb_device *usb_is_valid_device(USBDevice &dev)
+        {
+            struct sf_usb_device *ptr = NULL;
 
-    struct sf_usb_device* usb_is_valid_device(USBDevice& dev)
-    {
-        struct sf_usb_device* ptr = NULL;
-
-        for (int i = 0; (sf_usb_devices[i].vid > 0); i++) {
-            if (dev.is_VID_PID(sf_usb_devices[i].vid, sf_usb_devices[i].pid)) {
-                return &sf_usb_devices[i];
+            for (int i = 0; (sf_usb_devices[i].vid > 0); i++)
+            {
+                if (dev.is_VID_PID(sf_usb_devices[i].vid, sf_usb_devices[i].pid))
+                {
+                    return &sf_usb_devices[i];
+                }
             }
+
+            return ptr;
         }
 
-        return ptr;
     }
-
-}
 }
