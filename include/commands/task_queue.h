@@ -1,5 +1,5 @@
 /**
- *  @file: sdp.h
+ *  @file: task_queue.h
  *
  *  Copyright (C) 2020  Joe Turner <joe@agavemountain.com>
  *
@@ -17,16 +17,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 #pragma once
-#include <stdint.h>
+#include <vector>
 
-#pragma pack (1)
-struct sdp_command {
-	uint16_t cmd;
-	uint32_t addr;
-	uint8_t format;
-	uint32_t cnt;
-	uint32_t data;
-	uint8_t rsvd;
+class TaskQueue
+{
+
+private:
+    std::vector _commands;
 };
-#pragma pack ()
-

@@ -1,11 +1,6 @@
 Introduction
 ============
 
-Superflash is ultimately envisioned as a set standard of 
-utilities to program/flash embedded System On Chip (SOCs),
-embedded development boards, AVRs, MCUs, flash, EEPROMs
-and more.
-
 Each semiconductor manufacturer supplies tools for
 flashing/programming their parts.  As a result, professionally
 developing for multiple MCUs, MPUs, and SOCs requires multiple 
@@ -25,6 +20,21 @@ Some require bizarre and poorly documented scripting languages,
 sometimes in random formats.
 
 Enough already.
+
+Envisioned Use Cases
+--------------------
+
+Superflash is ultimately envisioned as a set standard of 
+utilities to program/flash embedded System On Chip (SOCs),
+embedded development boards, AVRs, MCUs, flash, EEPROMs
+and more.
+
+Ultimately, this project is envisioned to be used in the following
+scenarios:
+
+- Initial development, board bring up and development; and
+- RMA/returns - unbricking devices for diagnostics; and
+- Continous Integration and testing.
 
 Basic Concepts
 --------------
@@ -58,6 +68,18 @@ transferred into the target board/device.  Each manufacturer
 supports different file formats (Intel Hex, Motorola S Record, 
 ELF (Executable and Linkable Format), etc.).
 
+What You Will Need
+------------------
+
+You will need to have some understanding of how your embedded device/target board
+works.  You will also have to have the required cables.  In some cases schematics
+may be helpful, as sometimes jumpers can be set to enable flash loading.
+
+You will need to build the software required, whether it be a monolithic executable,
+or the linux trifecta -- u-boot, device tree, and linux kernel.
+
+Unfortunately, these are unique to the target board you are using.
+
 Supported Protocols
 -------------------
 
@@ -70,6 +92,22 @@ release:
 | Freescale UTP | SCSI generic | Freescale Update Transport Protocol (UTP) is only           |
 |               |              | supported via SCSI generic commands (Linux ONLY).           |
 +---------------+--------------+-------------------------------------------------------------+
+| Freescale SDP | USB HID/BULK | Freescale Serial Download Protocol (SDP) is only            |
+|               |              | supported via USB.                                          |
++---------------+--------------+-------------------------------------------------------------+
+
+Supported Parts/Chips
+---------------------
+
+The following Freescale/NXP chipsets are currently supported by this release:
+
++---------------+----------------------------------------------------------------------------+
+| Family        | Description / Notes                                                        |
++===============+============================================================================+
+| i.MX          | i.MX5/6/7/8 series over USB                                                |
++---------------+----------------------------------------------------------------------------+
+| Vybrid        | VF3xx, VF5xx, and VF6xx series over USB                                    |
++---------------+----------------------------------------------------------------------------+
 
 Acknowledgements
 ----------------

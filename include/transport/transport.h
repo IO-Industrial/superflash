@@ -18,17 +18,29 @@
 #pragma once
 #include <string>
 
-
 //! \brief Transport Device base class
-class TransportDevice
-{
+class TransportDevice {
 public:
-    
     //! \brief Default constructor
-    TransportDevice() : _device_fd(-1) {}
-    TransportDevice(std::string &filename) : _device_filename(filename), _device_fd(-1) {}
-    TransportDevice(const char *filename) : _device_filename(filename), _device_fd(-1) {}
-    TransportDevice(char *filename) : _device_filename(filename), _device_fd(-1) {}
+    TransportDevice()
+        : _device_fd(-1)
+    {
+    }
+    TransportDevice(std::string& filename)
+        : _device_filename(filename)
+        , _device_fd(-1)
+    {
+    }
+    TransportDevice(const char* filename)
+        : _device_filename(filename)
+        , _device_fd(-1)
+    {
+    }
+    TransportDevice(char* filename)
+        : _device_filename(filename)
+        , _device_fd(-1)
+    {
+    }
 
     virtual int Open();
     virtual void Close();
@@ -39,5 +51,3 @@ protected:
     std::string _device_filename;
     int _device_fd;
 };
-
-

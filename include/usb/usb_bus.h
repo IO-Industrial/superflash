@@ -19,12 +19,12 @@
  */
 #pragma once
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
 
 #include "errors.h"
-#include "usb/usb_defs.h"
 #include "usb/usb_context.h"
+#include "usb/usb_defs.h"
 #include "usb/usb_device.h"
 #include "usb/usb_enumerator.h"
 #include <memory>
@@ -43,7 +43,7 @@ namespace superflash {
  * \brief usb namespace
  * 
  * This namespace contains code to discover, enumerate, and communicate with 
- * USB devices.
+ * USB devices.  
  * 
  * \ingroup usb
  */
@@ -62,11 +62,12 @@ namespace usb {
         }
 
         //! \brief Initialize libusb.
-        //! This function must be called before calling any other libusb function.
+        //!
+        //! Initialize libusb and context.  This function must be called before 
+        //! calling any other libusb function.
         int initialize()
         {
-            if (_usbctx.getContext() != NULL)
-            {
+            if (_usbctx.getContext() != NULL) {
                 spdlog::warn("libusb context already initialized.");
                 return 0;
             }
@@ -82,29 +83,28 @@ namespace usb {
             return rc;
         }
 
-        //! \brief
+        //! \brief Deinitialize USB library
+        //!
+        //! Deinitialise libusb. Must be called at the end of the 
+        //! application. Other libusb routines may not be called 
+        //! after this.
         void deinitialize()
         {
             libusb_exit(NULL);
         }
 
+        //! \brief Get list of USB devices
+        //!
+        //! This function will return a list of devices that were
+        //! found on the USB bus.
+        //!
+        //! \returns
+        //! This function returns a vector of USBDevice objects.
         std::vector<USBDevice> get_device_list()
         {
             _device_list.clear();
             USBEnumerator enumerator(_usbctx, _device_list);
             return _device_list;
-        }
-
-        bool search_by_vid_pid(uint16_t vendor_id, uint16_t product_id)
-        {
-            std::vector<USBDevice> list = get_device_list();
-            for (int i = 0; i < list.size(); i++) {
-                if (list[i].is_VID_PID(vendor_id, product_id)) {
-                    list[i].dump();
-                    return true;
-                }
-            }
-            return false;
         }
 
     private:
@@ -113,13 +113,6 @@ namespace usb {
 
         std::vector<USBDevice> _device_list;
 
-        struct libusb_device* device = NULL;
-
-        libusb_device** _devices;
-        int _device_count;
-        //libusb_context* _usbcontext = NULL;
-
-        std::shared_ptr<USBDevice> _usb_device;
         USBContext _usbctx;
     };
 

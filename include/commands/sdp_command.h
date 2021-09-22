@@ -18,3 +18,44 @@
  */
 #pragma once
 #include "commands/command.h"
+#include "protocols/sdp.h"
+
+//! \brief Command interface abstract base class
+//!
+//! This is the base class for commands, which a part of command
+//! design pattern.
+//!
+class SDPCommand : public Command {
+public:
+    //! \brief Default constructor
+    SDPCommand() { }
+
+    //! \brief Default virtual destructor
+    virtual ~SDPCommand() {};
+
+    //! \brief Execute a stand alone command
+    //!
+    //! \returns
+    virtual int execute() { return 0; };
+
+protected:
+    struct sdp_command m_msg;
+};
+
+class SDPWriteFileCommand : public Command {
+};
+
+class SDPJumpCommand : public Command {
+};
+
+class SDPWriteDCDCommand : public Command {
+};
+
+class SDPStatusCommand : public Command {
+};
+
+class SDPWriteRegCommand : public Command {
+};
+
+class SDPReadRegCommand : public Command {
+};

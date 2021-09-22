@@ -6,18 +6,24 @@ The combined portfolio has a large number of MCUs and SoCs, from 8-bit MCUs to m
 processors.  They offer a variety of silicon families, which use a variety of mechanisms to
 be programmed.
 
-Supported Chips
----------------
+Long ago, Freescale provided MFGTools / sb_loader (Windows only) binaries to flash empty devices 
+leveraging the USB recovery feature of the i.MX family.  In 2010, Boundary Devices developed its 
+own Linux-based tool called imx-usb-loader, with the following features:
 
-The following Freescale/NXP chipsets are currently supported by this release:
+- Loading bootloader / recovering devices over USB recovery (SDP) protocol
+- Loading any binary in RAM over USB for flashing purposes
 
-+---------------+----------------------------------------------------------------------------+
-| Family        | Description / Notes                                                        |
-+===============+============================================================================+
-| i.MX          | i.MX5/6/7/8 series over UART (Serial) and USB                              |
-+---------------+----------------------------------------------------------------------------+
-| Vybrid        | VF3xx, VF5xx, and VF6xx series over UART (Serial) and USB                  |
-+---------------+----------------------------------------------------------------------------+
+In 2018, NXP decided to unify their tools, creating a new one from scratch called UUU.  However,
+it doesn't support some legacy devices.  It is important to note that Boundary Devices no longer 
+actively maintains the imx-usb-loader project.
+
+
+
+Vybrid Family
+^^^^^^^^^^^^^
+Vybrid SoCs are asymmetrical multiprocessors with ARM cores.  There are several variants, but 
+all come with an ARM Cortex-A5.  The variants come with or without an additional ARM Cortex-M4
+with shared memory.
 
 Supported Protocols
 -------------------
@@ -27,11 +33,13 @@ The following Freescale/NXP protocols are currently supported by this release:
 | Protocol      | Description / Notes                                                        |
 +===============+============================================================================+
 | UTP           | Freescale/NXP Update Transport Protocol; using SCSI generic commands and   |
-|               | currently is only supported by Linux                                       |
+|               | currently is only supported by Linux.  (Older devices)                     |
++---------------+----------------------------------------------------------------------------+
+| SDP           | Freescale/NXP Serial Download Protocol; via USB                            |
 +---------------+----------------------------------------------------------------------------+
 
 Freescale/NXP UTP Protocol
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Freescale Update Transport Protocol (UTP) is a protocol
 defined for delivering device update commands over USB, carried
@@ -51,56 +59,10 @@ With the utp utility, you can manipulate the board and pipe bash commands
 from your terminal without having to actually type anything directly on the 
 device. 
 
-Using UTP Utility
-^^^^^^^^^^^^^^^^^
+Freescale/NXP SDP Protocol
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Superflash provides a stand-alone utility, "utp," that will send UTP messages to
-your hardware device.  This requires that your device be booted into the 
-manufacturing Linux image, or running a version of u-boot that is compiled
-with the proper options.
-
-You should be familiar with the mfgtool and use the ucl2.xml file as a guide
-for formatting commands.  The utp utility can execute commands equivalent to 
-what the MfgTool does with all the CMD state="Updater" commands. 
-
-With U-Boot properly configured, executing "ums 0" will start accepting UTP
-commands:
-
-.. code-block:: text
-
-    Autoboot in 3 seconds
-    mydevice> ums 0
-    GADGET DRIVER: usb_dnl_ums
-    fsl-usb-udc: bind to driver
-
-Once the device is accepting UTP messages, you can execute a script to do your
-bidding.  
-
-Here is a practical example: to avoid having to put the device into recovery mode, you can break into 
-U-Boot, load and execute a kernel from memory.  This script can load your custom 
-kernel on a vybrid tower development board (you will obviously have to use the correct paths and filenames for your system):
-
-.. code-block:: text
-
-    #!/bin/bash
-
-    # Load device tree at 0x81000000
-    sudo ./utp -d /dev/sg0 -c "pipeaddr addr=0x81000000" -f /home/me/timesys/twr_vf600/rfs/boot/twr_vf600.dtb
-    # Load kernel at 0x8100000
-    sudo ./utp -d /dev/sg0 -c "pipeaddr addr=0x82000000" -f /home/me/timesys/twr_vf600/rfs/boot/uImage
-    # tell u-boot to boot.
-    sudo ./utp -d /dev/sg0 -c "$ bootm 0x82000000 - 0x81000000"
-
-Note: the commands are piped to a program executing on the device.  Depending on the device, kernel, or U-Boot
-version, the commands may vary.
-
-UTP Usage
-^^^^^^^^^
-
-.. code-block:: text
-
-    USAGE: utp -d <device> -c <command> [-f filename] 
-            -d      device (example: /dev/sg0)
-            -c      command to be run on target device
-            -f      file to be sent to target device 
-
+The Freescale/NXP Serial Download Protocol (SDP) was adopted for the iMX line of chips.
+Each device is somewhat unique in how to enable the device to be able to enable/intepret
+SDP.  Sometimes it is fuses, or jumpers.  Some devices will allow programming over CAN, USB, 
+or Serial UART.  These can alse be enabled/disabled during production flashing.

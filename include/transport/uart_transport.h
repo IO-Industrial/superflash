@@ -18,7 +18,5 @@
 #pragma once
 #include "transport/transport.h"
 
-class UARTTransportDevice : public TransportDevice
-{
+class UARTTransportDevice : public TransportDevice {
 };
-

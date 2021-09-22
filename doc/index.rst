@@ -5,8 +5,11 @@ Welcome to superflash's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   revisions
    intro
    nxp
+   superflash
+   utilities
 
 Indices and tables
 ==================

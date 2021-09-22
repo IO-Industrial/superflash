@@ -37,7 +37,8 @@ public:
     }
 
 private:
-    GlobalConfiguration() {
+    GlobalConfiguration()
+    {
         load_ini();
     }
 
@@ -59,7 +60,7 @@ private:
     void load_default_values();
 
     void save_ini();
-    
+
     CSimpleIniA ini;
     std::string _config_path;
 };

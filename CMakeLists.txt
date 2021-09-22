@@ -24,6 +24,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+
 # Build documentation option
 # 
 # This option will build the html documentation and doxygen
@@ -46,7 +47,7 @@ if(BUILD_DOCS)
     # HTML output directory
     set(SPHINX_HTML_DIR "${CMAKE_CURRENT_BINARY_DIR}/html")
     
-    add_custom_target(my_project_docs ALL
+    add_custom_target(superflash_docs_html ALL
         ${SPHINX_EXECUTABLE}
             -q -b html
             -c "${CMAKE_CURRENT_SOURCE_DIR}/doc"
@@ -55,6 +56,15 @@ if(BUILD_DOCS)
             "${SPHINX_HTML_DIR}"
         COMMENT "Building HTML documentation with Sphinx")
 
+    # add_custom_target(superflash_docs_pdf ALL
+    #     ${SPHINX_EXECUTABLE}
+    #         -q -b pdf
+    #         -c "${CMAKE_CURRENT_SOURCE_DIR}/doc"
+    #         -d "${SPHINX_CACHE_DIR}"
+    #         "${CMAKE_CURRENT_SOURCE_DIR}/doc"
+    #         "${SPHINX_HTML_DIR}"
+    #     COMMENT "Building PDF documentation with Sphinx")
+        
     # check if Doxygen is installed
 
 	if (DOXYGEN_FOUND)
@@ -104,12 +114,14 @@ SET(COMMON_SRC
     src/transport/transport.cpp
     src/transport/sg_transport.cpp
     src/usb/usb_devices.cpp
+    src/usb/usb_handle.cpp
     src/commands/utp_command.cpp
     src/commands/sdp_command.cpp
     src/errors.cpp
     src/bytesex.cpp
     src/config/environment.cpp
     src/config/global_config.cpp
+    src/arch/imx/imx_magic.cpp
 )
 
 link_directories(${LIBUSB_LIBRARY_DIRS} )

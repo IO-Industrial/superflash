@@ -17,31 +17,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 #include "errors.h"
-#include <stdio.h>
-#include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_sinks.h"
+#include "spdlog/spdlog.h"
+#include <stdio.h>
 
 namespace {
-    const char *sf_errors[] =
-    {
-        "OK",
-        "Error, no transport device specified",
-        "Error, opening transport device",
-        "Error, sending UTP message",
-        "Error, UTP reply is corrupted",
-        "Error, device is busy",
-        "Error, specified file does not exist",
-        "Error, failed to initialize USB context",
-        "Invalid error code.",
-    };
+const char* sf_errors[] = {
+    "OK",
+    "Error, no transport device specified",
+    "Error, opening transport device",
+    "Error, sending UTP message",
+    "Error, UTP reply is corrupted",
+    "Error, device is busy",
+    "Error, specified file does not exist",
+    "Error, failed to initialize USB context",
+    "Invalid error code.",
+};
 }
 
 void SF_ERROR(enum sf_ERROR error_no)
 {
     int idx = error_no;
     // range check
-    if ( (error_no < SF_OK) || (error_no >= SF_ERR_INVALID))
-    {
+    if ((error_no < SF_OK) || (error_no >= SF_ERR_INVALID)) {
         idx = SF_ERR_INVALID;
     }
 

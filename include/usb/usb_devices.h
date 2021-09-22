@@ -18,43 +18,58 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #pragma once
+#include "usb/usb_device.h"
 #include <stdint.h>
 
-enum eVENDORS
-{
-    VENDOR_UNKNOWN,
-    VENDOR_NXP,
-};
+namespace superflash {
+namespace usb {
 
-enum ePROTOCOLS
-{
-    UKNOWN_PROTOCOL = 0,
-    UTP_USB = 0x01,
-    SDP_UART = 0x2,
-    SDP_USB = 0x4,
-};
+    enum eUSB_CONTROL_HINT
+    {
+        USB_UNDEFINED,
+        USB_HID,
+        USB_BULK,
+    };
 
-struct sf_usb_device 
-{
-    uint32_t    vid;
-    uint32_t    pid;
-    const char  *march_description;
+    //! \brief Supported USB Device Structure
+    struct sf_usb_device {
+        uint32_t vid;
+        uint32_t pid;
+        const char* march_description;
+        enum eUSB_CONTROL_HINT usb_hint;
+        uint32_t max_transfer;
+        uint32_t dcd_addr;
+        uint32_t ram_start;
+    };
 
-    uint32_t    vendor;
-    uint32_t    protocols;
-};
+    //! \brief Search for this device in our supported device array
+    //!
+    //! This function will search for the device in our supported
+    //! device array.
+    //!
+    //! \param  vid
+    //! \param  pid
+    //!
+    //! \returns
+    //!
+    //! If this device is supported, a pointer to the structure will be returned.
+    //! However, if this combination of vid and pid cannot be found, a NULL
+    //! will be returned.
+    struct sf_usb_device* find(uint32_t vid, uint32_t pid);
 
-//! \brief Search for this device in our supported device array
-//!
-//! This function will search for the device in our supported
-//! device array.  
-//!
-//! \param  vid
-//! \param  pid
-//!
-//! \returns
-//!
-//! If this device is supported, a pointer to the structure will be returned.
-//! However, if this combination of vid and pid cannot be found, a NULL
-//! will be returned.
-struct sf_usb_device *find(uint32_t vid, uint32_t pid);
+    //! \brief Search for this device in our supported device array
+    //!
+    //! This function will search for the device in our supported
+    //! device array.
+    //!
+    //! \param  dev USB device object
+    //!
+    //! \returns
+    //!
+    //! If this device is supported, a pointer to the structure will be returned.
+    //! However, if this combination of vid and pid cannot be found, a NULL
+    //! will be returned.
+    struct sf_usb_device* usb_is_valid_device(USBDevice& dev);
+
+}
+}

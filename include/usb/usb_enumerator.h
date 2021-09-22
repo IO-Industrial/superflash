@@ -21,17 +21,16 @@
 #include <memory>
 #include <vector>
 
-#include "usb/usb_device.h"
 #include "usb/usb_context.h"
+#include "usb/usb_device.h"
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_sinks.h"
-
+#include "spdlog/spdlog.h"
 
 namespace superflash {
 namespace usb {
 
-    //! \brief USB device enumerator 
+    //! \brief USB device enumerator
     //!
     //! This class will get a list of USB devices, and populate the given
     //! vector (convert the fixed array of pointers into an STL vector),
@@ -42,12 +41,11 @@ namespace usb {
     //!
     class USBEnumerator {
     public:
-
         //! \brief Specialized constructor
         //!
         //! \param context  - Shared pointer to libusb context object
         //! \param devices  - reference to vector of USBDevice objects
-        USBEnumerator(USBContext &context, std::vector<USBDevice>& devices)
+        USBEnumerator(USBContext& context, std::vector<USBDevice>& devices)
         {
             devices.clear();
             _devices = NULL;

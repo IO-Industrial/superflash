@@ -20,13 +20,13 @@
 # -- Project information -----------------------------------------------------
 
 project = u'superflash'
-copyright = u'2020, Joe Turner'
+copyright = u'2021, Joe Turner'
 author = u'Joe Turner'
 
 # The short X.Y version
-version = u''
+version = u'0.2'
 # The full version, including alpha/beta/rc tags
-release = u'0.0.0'
+release = u'0.0.2'
 
 
 # -- General configuration ---------------------------------------------------
@@ -110,19 +110,19 @@ htmlhelp_basename = 'superflashdoc'
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
-    # 'papersize': 'letterpaper',
+    'papersize': 'letterpaper',
 
     # The font size ('10pt', '11pt' or '12pt').
     #
-    # 'pointsize': '10pt',
+    'pointsize': '10pt',
 
     # Additional stuff for the LaTeX preamble.
     #
-    # 'preamble': '',
+    'preamble': '',
 
     # Latex figure (float) alignment
     #
-    # 'figure_align': 'htbp',
+    'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -151,7 +151,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'superflash', u'superflash Documentation',
-     author, 'superflash', 'One line description of project.',
+     author, 'superflash', 'Universal Flash Loader',
      'Miscellaneous'),
 ]
 

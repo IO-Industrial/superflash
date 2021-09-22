@@ -25,7 +25,10 @@ namespace usb {
 
     //! \brief USBConfigDescriptor object
     //!
-    //! This destructor takes care of freeing the configuration descriptor
+    //! This class wraps a USB config descriptor.
+    //!
+    //! \note The destructor takes care of freeing the configuration 
+    //! descriptor.
     class USBConfigDescriptor {
     public:
         struct libusb_config_descriptor* config;
@@ -46,8 +49,8 @@ namespace usb {
             return libusb_get_config_descriptor(device, idx, &config);
         }
 
-        //! Get the USB configuration descriptor for the currently active 
-        //! configuration. This is a non-blocking function which does 
+        //! Get the USB configuration descriptor for the currently active
+        //! configuration. This is a non-blocking function which does
         //! not involve any requests being sent to the device.
         int getActiveConfigDescriptor(libusb_device* device)
         {
