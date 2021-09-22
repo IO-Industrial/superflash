@@ -331,34 +331,5 @@ int main(int argc, char** argv)
 
     return execute_jump_table(argc, argv);
 
-    // while ((c = getopt_long(argc, argv, "hsbw:", long_options, NULL)) != -1) {
-    //     switch (c) {
-    //     case 'h':
-    //         print_usage();
-    //         return 0;
-    //     case 's':
-    //         scanusb = 1;
-    //         break;
-    //     case 'b':
-    //         boardconf = optarg;
-    //         break;
-    //     case ':': // missing option argument
-    //         cerr << argv[0] << ": option '-" << (char)optopt
-    //              << "requires an argument. aborting.\n";
-    //         return 1;
-    //         break;
-    //     case 'w':
-    //         printf("Waiting for device.\n");
-    //         g_wait = true;
-    //         break;
-    //     case '?':
-    //         print_usage();
-    //         return 0;
-    //     default: // invalid option
-    //         cerr << argv[0] << ": option '-" << (char)optopt << "is invalid: aborting.\n";
-    //         return 1;
-    //         break;
-    //     }
-    // }
-
 }
+

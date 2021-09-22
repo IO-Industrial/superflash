@@ -7,31 +7,17 @@ processors.  They offer a variety of silicon families, which use a variety of me
 be programmed.
 
 Long ago, Freescale provided MFGTools / sb_loader (Windows only) binaries to flash empty devices 
-leveraging the USB recovery feature of the i.MX family.
-
-In 2010, Boundary Devices developed its own Linux-based tool called imx-usb-loader, with 
-the following features:
+leveraging the USB recovery feature of the i.MX family.  In 2010, Boundary Devices developed its 
+own Linux-based tool called imx-usb-loader, with the following features:
 
 - Loading bootloader / recovering devices over USB recovery (SDP) protocol
 - Loading any binary in RAM over USB for flashing purposes
 
 In 2018, NXP decided to unify their tools, creating a new one from scratch called UUU.  However,
-it doesn't support some legacy devices.
+it doesn't support some legacy devices.  It is important to note that Boundary Devices no longer 
+actively maintains the imx-usb-loader project.
 
-Note: Boundary Devices no longer actively maintains the imx-usb-loader.
 
-Supported Chips
----------------
-
-The following Freescale/NXP chipsets are currently supported by this release:
-
-+---------------+----------------------------------------------------------------------------+
-| Family        | Description / Notes                                                        |
-+===============+============================================================================+
-| i.MX          | i.MX5/6/7/8 series over UART (Serial) and USB                              |
-+---------------+----------------------------------------------------------------------------+
-| Vybrid        | VF3xx, VF5xx, and VF6xx series over UART (Serial) and USB                  |
-+---------------+----------------------------------------------------------------------------+
 
 Vybrid Family
 ^^^^^^^^^^^^^
